@@ -1,1 +1,26 @@
 attack-stix-data/
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+.antigravity/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# PostgreSQL / local data
+postgres_data/
+
+# Generated / local files
+*.log
