@@ -1,0 +1,62 @@
+[
+  {
+    "id": "stride-spoofing",
+    "source": "STRIDE",
+    "title": "Spoofing",
+    "text": "Spoofing is the act of pretending to be another user, service, or system component.\n\nTypical security concern:\n- Attacker impersonates a legitimate identity.\n- Attacker gains access using stolen or forged credentials.\n\nExamples:\n- Stolen user credentials\n- Forged authentication tokens\n- Impersonating an internal service\n\n---",
+    "tags": [
+      "STRIDE",
+      "Spoofing"
+    ]
+  },
+  {
+    "id": "stride-tampering",
+    "source": "STRIDE",
+    "title": "Tampering",
+    "text": "Tampering involves unauthorized modification of data, messages, configurations, or system state.\n\nTypical security concern:\n- An attacker changes information without authorization.\n\nExamples:\n- Modifying database records\n- Altering data in transit\n- Changing application configuration\n\n---",
+    "tags": [
+      "STRIDE",
+      "Tampering"
+    ]
+  },
+  {
+    "id": "stride-repudiation",
+    "source": "STRIDE",
+    "title": "Repudiation",
+    "text": "Repudiation occurs when an actor can deny performing an action and the system lacks sufficient evidence to prove otherwise.\n\nTypical security concern:\n- Insufficient logging or auditing makes actions difficult to attribute.\n\nExamples:\n- User denies performing a transaction\n- Missing audit logs\n- Logs that can be modified by unauthorized users\n\n---",
+    "tags": [
+      "STRIDE",
+      "Repudiation"
+    ]
+  },
+  {
+    "id": "stride-information-disclosure",
+    "source": "STRIDE",
+    "title": "Information Disclosure",
+    "text": "Information disclosure occurs when sensitive information is exposed to an unauthorized person or system.\n\nTypical security concern:\n- Confidential data becomes accessible to an unintended party.\n\nExamples:\n- Exposed passwords\n- Leaked personal information\n- Sensitive data returned through an API\n- Database information exposed through an injection vulnerability\n\n---",
+    "tags": [
+      "STRIDE",
+      "Information Disclosure"
+    ]
+  },
+  {
+    "id": "stride-denial-of-service",
+    "source": "STRIDE",
+    "title": "Denial of Service",
+    "text": "Denial of Service occurs when an attacker prevents legitimate users from accessing a system or resource.\n\nTypical security concern:\n- System availability is degraded or completely disrupted.\n\nExamples:\n- Flooding an API with requests\n- Exhausting server resources\n- Resource exhaustion through expensive operations\n\n---",
+    "tags": [
+      "STRIDE",
+      "Denial of Service"
+    ]
+  },
+  {
+    "id": "stride-elevation-of-privilege",
+    "source": "STRIDE",
+    "title": "Elevation of Privilege",
+    "text": "Elevation of Privilege occurs when an attacker gains permissions beyond those they are authorized to have.\n\nTypical security concern:\n- A low-privileged user or process gains higher privileges.\n\nExamples:\n- Normal user gaining administrator privileges\n- Exploiting an authorization vulnerability\n- A compromised service accessing restricted resources",
+    "tags": [
+      "STRIDE",
+      "Elevation of Privilege"
+    ]
+  }
+]

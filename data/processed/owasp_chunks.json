@@ -1,0 +1,266 @@
+[
+  {
+    "id": "owasp-a01",
+    "source": "OWASP",
+    "title": "A01:2025 – Broken Access Control",
+    "text": "Description:\n\nOccurs when restrictions on what authenticated or anonymous users are allowed to do are not properly enforced. Attackers can exploit these flaws to access unauthorized functionality or data (e.g., viewing other accounts, accessing sensitive files, modifying user permissions). In the 2025 edition, Server-Side Request Forgery (SSRF) as well as API authorization flaws (BOLA and BFLA) are formally folded into this category.\n\nHow to Prevent:\n\nAdopt a \"deny by default\" access policy; only explicitly granted roles or users should gain access.\n\nImplement centralized access control mechanisms in server-side code rather than client-side validations.\n\nEnforce record ownership checks on every request (ensure user_id belongs to the current session).\n\nBlock unauthorized internal requests (restrict internal network access to eliminate SSRF vectors).\n\nDisable directory listing and protect sensitive metadata endpoints.\n\nAttack Scenario:\n\nAn attacker logs into an application as user 1002. By modifying the request URL from GET /api/documents/1002/invoice.pdf to GET /api/documents/1001/invoice.pdf, the system fails to verify ownership and returns confidential financial records belonging to user 1001 (Broken Object Level Authorization / IDOR).",
+    "tags": [
+      "OWASP",
+      "OWASP Top 10",
+      "A01"
+    ]
+  },
+  {
+    "id": "owasp-a02",
+    "source": "OWASP",
+    "title": "A02:2025 – Security Misconfiguration",
+    "text": "Description:\n\nClimbing to #2 in 2025 due to the explosion of complex cloud, container, and infrastructure-as-code deployments. It involves unhardened application stacks, default credentials, exposed administrative interfaces, excessive cloud permissions, unneeded enabled services/ports, or overly permissive CORS configurations.\n\nHow to Prevent:\n\nImplement automated hardened baseline images and Infrastructure-as-Code (IaC) scanners.\n\nDisable default accounts and enforce password changes on initial setup.\n\nTurn off debugging and detailed stack-trace error messages in production environments.\n\nSend security headers (Content-Security-Policy, X-Frame-Options, Strict-Transport-Security).\n\nEnforce the principle of least privilege on all cloud IAM roles and service tokens.\n\nAttack Scenario:\n\nA developer leaves default administrative credentials (admin:admin) on an exposed cloud management dashboard (/admin-console) and fails to disable debug mode. An attacker accesses the interface, forces an application error to dump environment variables via verbose error reporting, and extracts production database credentials.",
+    "tags": [
+      "OWASP",
+      "OWASP Top 10",
+      "A02"
+    ]
+  },
+  {
+    "id": "owasp-a03",
+    "source": "OWASP",
+    "title": "A03:2025 – Software Supply Chain Failures",
+    "text": "Description:\n\nA new category replacing and expanding Vulnerable and Outdated Components. It covers the entire lifecycle of third-party software and dependencies—including compromised open-source packages, malicious transitive dependencies, typo-squatting, unpinned dependency updates, and tampered CI/CD pipelines.\n\nHow to Prevent:\n\nGenerate and continuously audit Software Bills of Materials (SBOMs) using standards like CycloneDX or SPDX.\n\nUse automated Software Composition Analysis (SCA) to detect known CVEs and malicious package behaviors.\n\nLock and pin package dependencies and check cryptographic hashes (e.g., package-lock.json, poetry.lock).\n\nSign build artifacts and ensure build pipelines (GitHub Actions, GitLab CI) require MFA and strict runner permissions.\n\nAttack Scenario:\n\nAn attacker gains commit access to an abandoned NPM package used by thousands of applications. They push a minor update containing an obfuscated credential-harvesting payload. When a target team’s automated CI/CD pipeline builds the production image using unpinned dependencies (^1.4.0), it pulls the malicious version, exfiltrating the application's runtime API keys.",
+    "tags": [
+      "OWASP",
+      "OWASP Top 10",
+      "A03"
+    ]
+  },
+  {
+    "id": "owasp-a04",
+    "source": "OWASP",
+    "title": "A04:2025 – Cryptographic Failures",
+    "text": "Description:\n\nFocuses on weaknesses related to data protection in transit and at rest. Common issues include transmitting sensitive data in cleartext, utilizing deprecated cryptographic algorithms (MD5, SHA1, DES), inadequate randomness, hardcoded cryptographic keys, and poor certificate validation.\n\nHow to Prevent:\n\nClassify data processed by the application and enforce encryption at rest using modern standards (e.g., AES-256, ChaCha20).\n\nEnforce TLS 1.3 (or modern TLS 1.2) everywhere, with HTTP Strict Transport Security (HSTS) enabled.\n\nNever invent or roll custom encryption algorithms; use vetted cryptographic libraries.\n\nHash passwords using salted, work-factor algorithms such as Argon2id or bcrypt.\n\nAttack Scenario:\n\nA web platform stores user credit card records in a database encrypted using DES with a static, hardcoded encryption key in the source code. Once an attacker extracts the database backup via a backup storage leak, they retrieve the static key from GitHub and decrypt all cardholder data within minutes.",
+    "tags": [
+      "OWASP",
+      "OWASP Top 10",
+      "A04"
+    ]
+  },
+  {
+    "id": "owasp-a05",
+    "source": "OWASP",
+    "title": "A05:2025 – Injection",
+    "text": "Description:\n\nOccurs when untrusted data is sent to an interpreter as part of a command or query without proper validation or sanitization. Attack vectors include SQL injection, OS command injection, Cross-Site Scripting (XSS), NoSQL injection, and LDAP injection.\n\nHow to Prevent:\n\nUse parameterized queries or Object-Relational Mappers (ORMs) that enforce parameterization.\n\nEmploy context-aware output encoding to neutralize browser-rendered scripts (preventing XSS).\n\nStrictly validate input using allow-lists (whitelists) rather than block-lists.\n\nAvoid executing shell commands directly using dynamic input (e.g., avoid os.system() or exec()).\n\nAttack Scenario:\n\nA search form takes user input and concatenates it into an SQL query: SELECT * FROM products WHERE name = ' + input + '. An attacker submits ' OR '1'='1'; DROP TABLE users; --, manipulating the query structure to dump all rows and potentially delete the user database table.",
+    "tags": [
+      "OWASP",
+      "OWASP Top 10",
+      "A05"
+    ]
+  },
+  {
+    "id": "owasp-a06",
+    "source": "OWASP",
+    "title": "A06:2025 – Insecure Design",
+    "text": "Description:\n\nA broad category focusing on architectural and design flaws that cannot be solved by simply fixing bugs in the implementation. If the fundamental design lacks security controls, threat modeling, or domain-specific safeguards, the system remains vulnerable despite bug-free code.\n\nHow to Prevent:\n\nEmbed Threat Modeling into early software architecture and design phases.\n\nEstablish and document secure design patterns, reference architectures, and user story abuse cases.\n\nEnforce business logic constraints (e.g., rate limits on password resets, atomic financial transactions).\n\nSegregate tenants and isolate sensitive internal services at the architectural level.\n\nAttack Scenario:\n\nAn e-commerce website designs a voucher redemption system where the user submits a promo code. The developers validate the code correctly, but the architectural design lacks a check to enforce atomic one-time redemption per account. An attacker issues 50 concurrent requests simultaneously, redeeming the same one-time $100 voucher multiple times before the balance counter registers.",
+    "tags": [
+      "OWASP",
+      "OWASP Top 10",
+      "A06"
+    ]
+  },
+  {
+    "id": "owasp-a07",
+    "source": "OWASP",
+    "title": "A07:2025 – Authentication Failures",
+    "text": "Description:\n\n(Refined from Identification and Authentication Failures). Involves flaws that allow attackers to compromise passwords, keys, session tokens, or exploit other implementation flaws to assume other users' identities.\n\nHow to Prevent:\n\nRequire Multi-Factor Authentication (MFA) for all sensitive actions and administrative portals.\n\nImplement rate limiting, CAPTCHAs, and account lockout/back-off policies against brute-force and credential stuffing attacks.\n\nUse secure, randomly generated session identifiers stored in HttpOnly, Secure, and SameSite cookies.\n\nInvalidate session tokens immediately upon logout or privilege modification.\n\nAttack Scenario:\n\nAn application’s login endpoint lacks rate limiting and account lockout mechanisms. An attacker uses a leaked list of millions of username/password pairs to run an automated credential-stuffing script, successfully compromising several user accounts that reused passwords.",
+    "tags": [
+      "OWASP",
+      "OWASP Top 10",
+      "A07"
+    ]
+  },
+  {
+    "id": "owasp-a08",
+    "source": "OWASP",
+    "title": "A08:2025 – Software and Data Integrity Failures",
+    "text": "Description:\n\nFocuses on code and infrastructure that does not protect against integrity violations. This includes deserializing untrusted data without verification, relying on unverified CDNs or plugins, and running unsigned firmware or application update scripts.\n\nHow to Prevent:\n\nUse digital signatures to verify that software artifacts, binaries, and updates originate from trusted sources.\n\nAvoid native deserialization formats (e.g., Python pickle, Java ObjectInputStream) for untrusted user inputs; adopt safe serialization formats like JSON or Protocol Buffers.\n\nUse Subresource Integrity (SRI) hashes when including third-party scripts via CDNs.\n\nAttack Scenario:\n\nA web application receives a serialized Java object in a base64-encoded cookie. An attacker crafts a malicious serialized gadget chain payload inside the cookie. When the server automatically deserializes the object upon arrival, arbitrary code executes on the host server (Remote Code Execution).",
+    "tags": [
+      "OWASP",
+      "OWASP Top 10",
+      "A08"
+    ]
+  },
+  {
+    "id": "owasp-a09",
+    "source": "OWASP",
+    "title": "A09:2025 – Security Logging and Alerting Failures",
+    "text": "Description:\n\nInsufficient logging, detection, monitoring, and active alerting. If security-relevant events (such as failed logins, access violations, or server exceptions) are not recorded or analyzed in real time, attackers can persist within systems undetected for months.\n\nHow to Prevent:\n\nEnsure all login, access control, and server-side validation failures generate auditable log records with sufficient user/request context.\n\nPrevent logs from recording sensitive data (plain passwords, API keys, PII).\n\nCentralize logs into a SIEM/monitoring service with real-time alerting on suspicious patterns (e.g., multiple access violations from a single IP).\n\nImplement log integrity safeguards to prevent attackers from deleting traces.\n\nAttack Scenario:\n\nAn attacker probes an API with thousands of unauthorized IDOR requests trying to find valid user IDs. Because the application logs failed access control checks as normal HTTP 403 responses without triggering an alert or rate-limit flag, the attacker iterates undisturbed until finding and exfiltrating confidential patient data.",
+    "tags": [
+      "OWASP",
+      "OWASP Top 10",
+      "A09"
+    ]
+  },
+  {
+    "id": "owasp-a10",
+    "source": "OWASP",
+    "title": "A10:2025 – Mishandling of Exceptional Conditions",
+    "text": "Description:\n\nA new category in 2025 capturing failures that occur when things go wrong unexpectedly during runtime. This includes \"fail-open\" logic (granting access or bypassing checks when a database query or auth provider times out), uncaught exceptions exposing internal stack traces, and unhandled race conditions leading to system instability.\n\nHow to Prevent:\n\nEnforce \"fail-closed / fail-secure\" programming patterns—if an authentication or permission check crashes or times out, access must default to denied.\n\nImplement global exception-handling handlers that return generic, friendly error pages while routing raw details to private logs.\n\nClean up and release system resources (file handles, database locks, memory buffers) inside finally blocks or structured context managers.\n\nAttack Scenario:\n\nAn application relies on an external microservice to verify role-based permissions. The developers write a try/except block where, if the external permission service fails or times out, the code logs a warning and proceeds through the pipeline. An attacker overwhelms the auth service with dummy traffic (DoS); when the service times out, the application fails open, granting the attacker unrestricted administrative privileges.",
+    "tags": [
+      "OWASP",
+      "OWASP Top 10",
+      "A10"
+    ]
+  },
+  {
+    "id": "owasp-cheatsheet-introduction",
+    "source": "OWASP",
+    "title": "Introduction",
+    "text": "Threat modeling is an important concept for modern application developers to understand. The goal of this cheatsheet is to provide a concise, but actionable, reference for both those new to threat modeling and those seeking a refresher. The OWASP Threat Modeling project provides further information on various aspects of threat modeling.",
+    "tags": [
+      "OWASP",
+      "Threat Modeling Cheat Sheet",
+      "Introduction"
+    ]
+  },
+  {
+    "id": "owasp-cheatsheet-overview",
+    "source": "OWASP",
+    "title": "Overview",
+    "text": "In the context of application security, threat modeling is a structured, repeatable process used to gain actionable insights into the security characteristics of a particular system. It involves modeling a system from a security perspective, identifying applicable threats based on this model, and determining responses to these threats. Threat modeling analyzes a system from an adversarial perspective, focusing on ways in which an attacker can exploit a system.\n\nThreat modeling is ideally performed early in the SDLC, such as during the design phase. Moreover, it is not something that is performed once and never again. A threat model is something that should be maintained, updated and refined alongside the system. Ideally, threat modeling should be integrated seamlessly into a team's normal SDLC process; it should be treated as standard and necessary step in the process, not an add-on.\n\nAccording to the Threat Modeling Manifesto, the threat modeling process should answer the following four questions:\n\nWhat are we working on?\nWhat can go wrong?\nWhat are we going to do about it?\nDid we do a good enough job?\nThese four questions will act as the foundation for the four major phases described below.",
+    "tags": [
+      "OWASP",
+      "Threat Modeling Cheat Sheet",
+      "Overview"
+    ]
+  },
+  {
+    "id": "owasp-cheatsheet-advantages",
+    "source": "OWASP",
+    "title": "Advantages",
+    "text": "Before turning to an overview of the process, it may be worth addressing the question: why threat model? Why bother adding more work to the development process? What are the benefits? The following section will briefly outline some answers to these questions.",
+    "tags": [
+      "OWASP",
+      "Threat Modeling Cheat Sheet",
+      "Advantages"
+    ]
+  },
+  {
+    "id": "owasp-cheatsheet-identify-risks-early-on",
+    "source": "OWASP",
+    "title": "Identify Risks Early On",
+    "text": "Threat modeling seeks to identify potential security issues during the design phase. This allows security to be \"built-into\" a system rather than \"bolted-on\". This is far more efficient than having to identify and resolve security flaws after a system is in production.",
+    "tags": [
+      "OWASP",
+      "Threat Modeling Cheat Sheet",
+      "Identify Risks Early On"
+    ]
+  },
+  {
+    "id": "owasp-cheatsheet-increased-security-awareness",
+    "source": "OWASP",
+    "title": "Increased Security Awareness",
+    "text": "Proper threat modeling requires participants to think creatively and critically about the security and threat landscape of a specific application. It challenges individuals to \"think like an attacker\" and apply general security knowledge to a specific context. Threat modeling is also typically a team effort with members being encouraged to share ideas and provide feedback on others. Overall, threat modeling can prove to be a highly educational activity that benefits participants.",
+    "tags": [
+      "OWASP",
+      "Threat Modeling Cheat Sheet",
+      "Increased Security Awareness"
+    ]
+  },
+  {
+    "id": "owasp-cheatsheet-improved-visibility-of-target-of-evaluation-toe",
+    "source": "OWASP",
+    "title": "Improved Visibility of Target of Evaluation (TOE)",
+    "text": "Threat modeling requires a deep understanding of the system being evaluated. To properly threat model, one must understand data flows, trust boundaries, and other characteristics of the system. Thus improved visibility into a system and its interactions is one advantage of threat modeling.",
+    "tags": [
+      "OWASP",
+      "Threat Modeling Cheat Sheet",
+      "Improved Visibility of Target of Evaluation (TOE)"
+    ]
+  },
+  {
+    "id": "owasp-cheatsheet-addressing-each-question",
+    "source": "OWASP",
+    "title": "Addressing Each Question",
+    "text": "There is no universally accepted industry standard for the threat modeling process, no \"right\" answer for every use case. However, despite this diversity, most approaches do include the processes of system modeling, threat identification, and risk response in some form. Inspired by these commonalities and guided by the four key questions of threat modeling discussed above, this cheatsheet will break the threat modeling down into four basic steps: application decomposition, threat identification and ranking, mitigations, and review and validation. There are processes that are less aligned to this, including PASTA and OCTAVE, each of which has passionate advocates.",
+    "tags": [
+      "OWASP",
+      "Threat Modeling Cheat Sheet",
+      "Addressing Each Question"
+    ]
+  },
+  {
+    "id": "owasp-cheatsheet-system-modeling",
+    "source": "OWASP",
+    "title": "System Modeling",
+    "text": "The step of system modeling seeks to answer the question \"what are we building\"? Without understanding a system, one cannot truly understand what threats are most applicable to it; thus, this step provides a critical foundation for subsequent activities. Although different techniques may be used in this first step of threat modeling, data flow diagrams (DFDs) are arguably the most common approach.\n\nDFDs allow one to visually model a system and its interactions with data and other entities; they are created using a small number of simple symbols. DFDs may be created within dedicated threat modeling tools such as OWASP's Threat Dragon or Microsoft's Threat Modeling Tool or using general purpose diagraming solutions such as draw.io. If you prefer an -as-code approach, OWASP's pytm can help there. Depending on the scale and complexity of the system being modeled, multiple DFDs may be required. For example, one could create a DFD representing a high-level overview of the entire system along with a number of more focused DFDs which detail sub-systems. Technical tools are not strictly necessary; whiteboarding may be sufficient in some instances, though it is preferable to have the DFDs in a form that can be easily stored, referenced, and updated as needed.\n\nRegardless of how a DFD or comparable model is generated, it is important that the solution provides a clear view of trust boundaries, data flows, data stores, processes, and the external entities which may interact with the system. These often represent possible attack points and provide crucial input for the subsequent steps.\n\nAnother approach to Data Flow Diagrams (DFD) could be the brainstorming technique, which is an effective method for generating ideas and discovering the project's domain. Applying brainstorming in this context can bring numerous benefits, such as increased team engagement, unification of knowledge and terminology, a shared understanding of the domain, and quick identification of key processes and dependencies. One of the main arguments for using brainstorming is its flexibility and adaptability to almost any scenario, including business logic. Additionally, this technique is particularly useful when less technical individuals participate in the session, as it eliminates barriers related to understanding and applying the components of DFD models and their correctness.\n\nBrainstorming engages all participants, fostering better communication and mutual understanding of issues. Every team member has the opportunity to contribute, which increases the sense of responsibility and involvement. During a brainstorming session, participants can collaboratively define and agree on key terms and concepts, leading to a unified language used in the project. This is especially important in complex projects where different teams might have different approaches to terminology. Due to the dynamic nature of brainstorming, the team can quickly identify key business processes and their interrelations.\n\nIntegrating the results of brainstorming with formal modeling techniques can lead to a better understanding of the domain and more effective system design.",
+    "tags": [
+      "OWASP",
+      "Threat Modeling Cheat Sheet",
+      "System Modeling"
+    ]
+  },
+  {
+    "id": "owasp-cheatsheet-cloud-threat-modeling",
+    "source": "OWASP",
+    "title": "Cloud Threat Modeling",
+    "text": "Most modern systems are cloud-native or hybrid. Traditional threat modeling techniques (like STRIDE or DFDs) often need adaptation for cloud architectures, which introduce:\n\nShared responsibility models\nManaged services and APIs\nMulti-tenant and identity federation considerations\nDynamic infrastructure (IaC, serverless, containers)\nCloud-native systems introduce unique considerations for threat modeling due to their distributed, service-oriented nature and shared responsibility model. In this context, the threat modeling process should account for:\n\nCloud architecture components: virtual networks, IAM roles, managed services, and storage buckets.\nShared responsibility: understanding which security controls are managed by the provider vs. the customer.\nDynamic environments: container orchestration, serverless functions, and ephemeral infrastructure.\nCompliance and data residency: ensuring that workloads meet jurisdictional and privacy requirements.\nCloud threat modeling frameworks such as AWS’s Well-Architected Framework – Security Pillar can serve as references.",
+    "tags": [
+      "OWASP",
+      "Threat Modeling Cheat Sheet",
+      "Cloud Threat Modeling"
+    ]
+  },
+  {
+    "id": "owasp-cheatsheet-threat-identification",
+    "source": "OWASP",
+    "title": "Threat Identification",
+    "text": "After the system has been modeled, it is now time to address the question of \"what can go wrong?\". This question must be explored with the inputs from the first step in mind; that is, it should focus on identifying and ranking threats within the context of the specific system being evaluated. In attempting to answer this question, threat modelers have a wealth of data sources and techniques at their disposal. For illustration purposes, this cheatsheet will leverage STRIDE; however, in practice, other approaches may be used alongside or instead of STRIDE.\n\nSTRIDE is a mature and popular threat modeling technique and mnemonic originally developed by Microsoft employees. To facilitate threat identification, STRIDE groups threats into one of six general prompts and engineers are encouraged to systematically consider how these general threats may materialize within the context of the specific system being evaluated. Each STRIDE threat may be considered a violation of a desirable security attribute; the categories and associated desirable attributes are as follows:\n\nThreat Category\tViolates\tExamples\nSpoofing\tAuthentication\tAn attacker steals the authentication token of a legitimate user and uses it to impersonate the user.\nTampering\tIntegrity\tAn attacker abuses the application to perform unintended updates to a database.\nRepudiation\tAccounting\tAn attacker manipulates logs to cover their actions.\nInformation Disclosure\tConfidentiality\tAn attacker extracts data from a database containing user account info.\nDenial of Service\tAvailability\tAn attacker locks a legitimate user out of their account by performing many failed authentication attempts.\nElevation of Privileges\tAuthorization\tAn attacker tampers with a JWT to change their role.\nSTRIDE provides valuable structure for responding to the question of \"what can go wrong\". It is also a highly flexible approach and getting started need not be complex. Simple techniques such as brainstorming and whiteboarding or even games may be used initially. STRIDE is also incorporated into popular threat modeling tools such as OWASP's Threat Dragon and Microsoft's Threat Modeling Tool. Additionally, as a relatively high-level process, STRIDE pairs well with more tactical approaches such as kill chains or MITRE's ATT&CK (please refer to this article for an overview of how STRIDE and ATT&CK can work together).\n\nAfter possible threats have been identified, people will frequently rank them. In theory, ranking should be based on the mathematical product of an identified threat's likelihood and its impact. A threat that is likely to occur and result in serious damage would be prioritized much higher than one that is unlikely to occur and would only have a moderate impact. However, these both can be challenging to calculate, and they ignore the work to fix a problem. Some advocate for including that in a single prioritization.",
+    "tags": [
+      "OWASP",
+      "Threat Modeling Cheat Sheet",
+      "Threat Identification"
+    ]
+  },
+  {
+    "id": "owasp-cheatsheet-response-and-mitigations",
+    "source": "OWASP",
+    "title": "Response and Mitigations",
+    "text": "Equipped with an understanding of both the system and applicable threats, it is now time to answer \"what are we going to do about it\"?. Each threat identified earlier must have a response. Threat responses are similar, but not identical, to risk responses. Adam Shostack lists the following responses:\n\nMitigate: Take action to reduce the likelihood that the threat will materialize.\nEliminate: Simply remove the feature or component that is causing the threat.\nTransfer: Shift responsibility to another entity such as the customer.\nAccept: Do not mitigate, eliminate, or transfer the risk because none of the above options are acceptable given business requirements or constraints.\nIf one decides to mitigate a threat, mitigation strategies must be formulated and documented as requirements. Depending on the complexity of the system, nature of threats identified, and the process used for identifying threats (STRIDE or another method), mitigation responses may be applied at either the category or individual threat level. In the former case, the mitigation would apply to all threats within that category. Mitigation strategies must be actionable not hypothetical; they must be something that can actually be built into to the system being developed. Although mitigation strategies must be tailored to the particular application, resources such as as OWASP's ASVS and MITRE's CWE list can prove valuable when formulating these responses.",
+    "tags": [
+      "OWASP",
+      "Threat Modeling Cheat Sheet",
+      "Response and Mitigations"
+    ]
+  },
+  {
+    "id": "owasp-cheatsheet-review-and-validation",
+    "source": "OWASP",
+    "title": "Review and Validation",
+    "text": "Finally, it is time to answer the question \"did we do a good enough job\"? The threat model must be reviewed by all stakeholders, not just the development or security teams. Areas to focus on include:\n\nDoes the DFD (or comparable) accurately reflect the system?\nHave all threats been identified?\nFor each identified threat, has a response strategy been agreed upon?\nFor identified threats for which mitigation is the desired response, have mitigation strategies been developed which reduce risk to an acceptable level?\nHas the threat model been formally documented? Are artifacts from the threat model process stored in such a way that it can be accessed by those with \"need to know\"?\nCan the agreed upon mitigations be tested? Can success or failure of the requirements and recommendations from the threat model be measured?",
+    "tags": [
+      "OWASP",
+      "Threat Modeling Cheat Sheet",
+      "Review and Validation"
+    ]
+  },
+  {
+    "id": "owasp-cheatsheet-challenges",
+    "source": "OWASP",
+    "title": "Challenges",
+    "text": "Threat modeling can be challenging for development teams for several key reasons. Firstly, many developers lack sufficient knowledge and experience in the field of security, which hinders their ability to effectively use methodologies and frameworks, identify, and model threats. Without proper training and understanding of basic security principles, developers may overlook potential threats or incorrectly assess their risks.\n\nAdditionally, the threat modeling process can be complex and time-consuming. It requires a systematic approach and in-depth analysis, which is often difficult to reconcile with tight schedules and the pressure to deliver new functionalities. Development teams may feel a lack of tools and resources to support them in this task, leading to frustration and discouragement.\n\nAnother challenge is the communication and collaboration between different departments within the organization. Without effective communication between development teams, security teams, and other stakeholders, threat modeling can be incomplete or misdirected.",
+    "tags": [
+      "OWASP",
+      "Threat Modeling Cheat Sheet",
+      "Challenges"
+    ]
+  },
+  {
+    "id": "owasp-cheatsheet-addressing-the-challenges",
+    "source": "OWASP",
+    "title": "Addressing the Challenges",
+    "text": "In many cases, the solution lies in inviting members of the security teams to threat modeling sessions, which can significantly improve the process. Security specialists bring essential knowledge about potential threats that is crucial for effective identification, risk analysis, and mitigation. Their experience and understanding of the latest trends and techniques used by cybercriminals can provide key insights for learning and developing the competencies of development teams. Such joint sessions not only enhance developers' knowledge but also build a culture of collaboration and mutual support within the organization, leading to a more comprehensive approach to security.\n\nTo change the current situation, organizations should invest in regular IT security training for their development teams. These training sessions should be conducted by experts and tailored to the specific needs of the team. Additionally, it is beneficial to implement processes and tools that simplify and automate threat modeling. These tools can help in identifying and assessing threats, making the process more accessible and less time-consuming.\n\nIt is also important to promote a culture of security throughout the organization, where threat modeling is seen as an integral part of the Software Development Life Cycle (SDLC), rather than an additional burden. Regular review sessions and cross-team workshops can improve collaboration and communication, leading to a more effective and comprehensive approach to security. Through these actions, organizations can make threat modeling a less burdensome and more efficient process, bringing real benefits to the security of their systems.",
+    "tags": [
+      "OWASP",
+      "Threat Modeling Cheat Sheet",
+      "Addressing the Challenges"
+    ]
+  }
+]
