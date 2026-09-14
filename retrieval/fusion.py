@@ -37,14 +37,34 @@ def reciprocal_rank_fusion(dense_results, sparse_results, k=60):
 if __name__ == "__main__":
     from dense_retriever import DenseRetriever
     from sparse_retriever import SparseRetriever
+    from reranker import Reranker
 
-    query = "JWT token theft"
+    query = "SQL injection"
+
+    # -----------------------------
+    # 1. Initialize retrievers
+    # -----------------------------
 
     dense_retriever = DenseRetriever()
     sparse_retriever = SparseRetriever()
 
-    dense_results = dense_retriever.search(query, top_k=5)
-    sparse_results = sparse_retriever.search(query, top_k=5)
+    # -----------------------------
+    # 2. Retrieve candidates
+    # -----------------------------
+
+    dense_results = dense_retriever.search(
+        query,
+        top_k=10
+    )
+
+    sparse_results = sparse_retriever.search(
+        query,
+        top_k=10
+    )
+
+    # -----------------------------
+    # 3. Fuse using RRF
+    # -----------------------------
 
     fused_results = reciprocal_rank_fusion(
         dense_results,
@@ -53,13 +73,38 @@ if __name__ == "__main__":
 
     print("\n========== RRF RESULTS ==========")
 
-    for rank, result in enumerate(fused_results[:5], start=1):
+    for rank, result in enumerate(
+        fused_results[:10],
+        start=1
+    ):
         chunk = result["chunk"]
 
         print(f"\nRank {rank}")
         print("ID:", chunk["id"])
-        print("Source:", chunk["source"])
         print("Title:", chunk["title"])
         print("RRF Score:", result["score"])
 
-    print("\n=================================")
+    # -----------------------------
+    # 4. Rerank using cross-encoder
+    # -----------------------------
+
+    reranker = Reranker()
+
+    reranked_results = reranker.rerank(
+        query,
+        fused_results[:10],
+        top_k=5
+    )
+
+print("\n====== RERANKED RESULTS ======")
+
+for rank, result in enumerate(reranked_results, start=1):
+    chunk = result["chunk"]
+
+    print(
+        f"{rank}. {chunk['id']} | "
+        f"{chunk['title']} | "
+        f"Score: {result['score']:.4f}"
+    )
+
+print("\n==============================")
