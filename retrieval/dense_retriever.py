@@ -1,3 +1,4 @@
+
 import os
 
 import psycopg2
@@ -27,7 +28,7 @@ class DenseRetriever:
         print("Loading embedding model...")
         self.model = SentenceTransformer(MODEL_NAME)
 
-    def search(self, query, top_k=5):
+    def search(self, query, top_k=5, source=None):
 
         print(f"Searching for: {query}")
 
@@ -39,25 +40,46 @@ class DenseRetriever:
         connection = psycopg2.connect(**DB_CONFIG)
         cursor = connection.cursor()
 
-        query_sql = """
-            SELECT
-                id,
-                source,
-                title,
-                text,
-                tags,
-                1 - (embedding <=> %s::vector) AS similarity
-            FROM chunks
-            ORDER BY embedding <=> %s::vector
-            LIMIT %s;
-        """
-
         embedding = query_embedding.tolist()
 
-        cursor.execute(
-            query_sql,
-            (embedding, embedding, top_k)
-        )
+        if source:
+            query_sql = """
+                SELECT
+                    id,
+                    source,
+                    title,
+                    text,
+                    tags,
+                    1 - (embedding <=> %s::vector) AS similarity
+                FROM chunks
+                WHERE source = %s
+                ORDER BY embedding <=> %s::vector
+                LIMIT %s;
+            """
+
+            cursor.execute(
+                query_sql,
+                (embedding, source, embedding, top_k)
+            )
+
+        else:
+            query_sql = """
+                SELECT
+                    id,
+                    source,
+                    title,
+                    text,
+                    tags,
+                    1 - (embedding <=> %s::vector) AS similarity
+                FROM chunks
+                ORDER BY embedding <=> %s::vector
+                LIMIT %s;
+            """
+
+            cursor.execute(
+                query_sql,
+                (embedding, embedding, top_k)
+            )
 
         rows = cursor.fetchall()
 
@@ -83,9 +105,9 @@ if __name__ == "__main__":
 
     retriever = DenseRetriever()
 
-    query = "JWT token theft"
+    query = "JWT token theft auth service"
 
-    results = retriever.search(query, top_k=5)
+    results = retriever.search(query, top_k=5, source="MITRE_ATT&CK")
 
     print("\n========== DENSE RESULTS ==========")
 

@@ -31,25 +31,50 @@ def tokenize(text):
 class SparseRetriever:
 
     def __init__(self):
-        print("Building BM25 index...")
+        print("Building BM25 indexes...")
 
         self.chunks = load_chunks()
 
-        documents = [
-            tokenize(chunk["text"])
-            for chunk in self.chunks
-        ]
+        self.source_chunks = {
+            "STRIDE": [],
+            "OWASP": [],
+            "MITRE_ATT&CK": []
+        }
 
-        self.bm25 = BM25Okapi(documents)
+        for chunk in self.chunks:
+            self.source_chunks[chunk["source"]].append(chunk)
 
-        print("BM25 index built.")
+        self.bm25_indexes = {}
+
+        for source, chunks in self.source_chunks.items():
+            documents = [
+                tokenize(chunk["text"])
+                for chunk in chunks
+            ]
+
+            self.bm25_indexes[source] = BM25Okapi(documents)
+
+        print("BM25 indexes built.")
 
 
-    def search(self, query, top_k=10):
+    def search(self, query, top_k=10, source=None):
 
         query_tokens = tokenize(query)
 
-        scores = self.bm25.get_scores(query_tokens)
+        if source:
+            chunks = self.source_chunks[source]
+            bm25 = self.bm25_indexes[source]
+        else:
+            chunks = self.chunks
+
+            documents = [
+                tokenize(chunk["text"])
+                for chunk in chunks
+            ]
+
+            bm25 = BM25Okapi(documents)
+
+        scores = bm25.get_scores(query_tokens)
 
         ranked_indices = sorted(
             range(len(scores)),
@@ -60,10 +85,16 @@ class SparseRetriever:
         results = []
 
         for index in ranked_indices:
+            if scores[index] <= 0:
+                continue
+
             results.append({
-                "chunk": self.chunks[index],
+                "chunk": chunks[index],
                 "score": float(scores[index])
             })
+
+            if len(results) >= top_k:
+                break
 
         return results
 
@@ -72,9 +103,9 @@ if __name__ == "__main__":
 
     retriever = SparseRetriever()
 
-    query = "JWT token theft"
+    query = "JWT token theft auth service"
 
-    results = retriever.search(query, top_k=5)
+    results = retriever.search(query, top_k=5, source="MITRE_ATT&CK")
 
     print("\n========== BM25 RESULTS ==========")
 
