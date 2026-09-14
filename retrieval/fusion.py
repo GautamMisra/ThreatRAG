@@ -96,15 +96,15 @@ if __name__ == "__main__":
         top_k=5
     )
 
-print("\n====== RERANKED RESULTS ======")
+    print("\n====== RERANKED RESULTS ======")
 
-for rank, result in enumerate(reranked_results, start=1):
-    chunk = result["chunk"]
+    for rank, result in enumerate(reranked_results, start=1):
+        chunk = result["chunk"]
 
-    print(
-        f"{rank}. {chunk['id']} | "
-        f"{chunk['title']} | "
-        f"Score: {result['score']:.4f}"
-    )
+        print(
+            f"{rank}. {chunk['id']} | "
+            f"{chunk['title']} | "
+            f"Score: {result['score']:.4f}"
+        )
 
-print("\n==============================")
+    print("\n==============================")
