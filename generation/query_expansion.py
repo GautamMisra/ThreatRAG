@@ -66,8 +66,10 @@ Output:
 }}
 
 Now expand this component:
-
+Component:
 "{component}"
+Technology:
+"{technology}"
 """
 
 
@@ -90,8 +92,8 @@ def expand_query(component, technology):
 
 if __name__ == "__main__":
 
-    component = "auth service"
-    technology = "JWT"
+    component = "web api"
+    technology = "SQL Injection"
 
     result = expand_query(
         component,
