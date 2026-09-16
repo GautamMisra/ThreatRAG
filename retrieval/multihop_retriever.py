@@ -1,26 +1,10 @@
-from dense_retriever import DenseRetriever
-from sparse_retriever import SparseRetriever
-from fusion import reciprocal_rank_fusion
-from reranker import Reranker
+from retrieval.dense_retriever import DenseRetriever
+from retrieval.sparse_retriever import SparseRetriever
+from retrieval.fusion import reciprocal_rank_fusion
+from retrieval.reranker import Reranker
 
+from generation.query_expansion import expand_query
 
-def build_subqueries(component, tech):
-    return {
-        "stride": {
-            "query": f"{component} {tech} threats attacks risks",
-            "source": "STRIDE"
-        },
-
-        "attack": {
-            "query": f"{component} {tech} attacks adversary techniques",
-            "source": "MITRE_ATT&CK"
-        },
-
-        "owasp": {
-            "query": f"{component} {tech} vulnerabilities security risks",
-            "source": "OWASP"
-        }
-    }
 
 def normalize_scores(results):
     if not results:
@@ -101,90 +85,78 @@ class MultiHopRetriever:
 
     def retrieve(self, component, tech, top_k=5):
 
-        subqueries = build_subqueries(component, tech)
+        expanded_queries = expand_query(component, tech)
+
+        source_map = {
+            "stride": "STRIDE",
+            "attack": "MITRE_ATT&CK",
+            "owasp": "OWASP"
+        }
 
         all_results = []
 
-        for hop, hop_info in subqueries.items():
+        for hop, queries in expanded_queries.items():
 
-            query = hop_info["query"]
-            source = hop_info["source"]
+            source = source_map[hop]
 
             print(f"\n========== {hop.upper()} HOP ==========")
-            print("Query:", query)
             print("Source:", source)
 
-            # 1. Dense retrieval
-            dense_results = self.dense.search(
-                query,
-                top_k=10,
-                source=source
-            )
+            hop_results = []
 
-            # 2. BM25 retrieval
-            sparse_results = self.sparse.search(
-                query,
-                top_k=10,
-                source=source
-            )
+            for query in queries:
 
-            print("\n----- DENSE RESULTS -----")
+                print("\nSearching for:", query)
 
-            for rank, result in enumerate(dense_results, start=1):
-                print(
-                    f"Rank {rank} | "
-                    f"ID: {result['id']} | "
-                    f"Title: {result['title']} | "
-                    f"Dense Score: {result['score']}"
+                # Dense retrieval
+                dense_results = self.dense.search(
+                    query,
+                    top_k=10,
+                    source=source
                 )
 
-            print("\n----- BM25 RESULTS -----")
-
-            for rank, result in enumerate(sparse_results, start=1):
-                chunk = result["chunk"]
-
-                print(
-                    f"Rank {rank} | "
-                    f"ID: {chunk['id']} | "
-                    f"Title: {chunk['title']} | "
-                    f"BM25 Score: {result['score']}"
+                # BM25 retrieval
+                sparse_results = self.sparse.search(
+                    query,
+                    top_k=10,
+                    source=source
                 )
 
-            # 3. RRF fusion
-            fused_results = reciprocal_rank_fusion(
-                dense_results,
-                sparse_results
-            )
-
-            print("\n----- RRF RESULTS -----")
-
-            for rank, result in enumerate(fused_results[:10], start=1):
-                chunk = result["chunk"]
-
-                print(
-                    f"Rank {rank} | "
-                    f"ID: {chunk['id']} | "
-                    f"Title: {chunk['title']} | "
-                    f"RRF Score: {result['score']}"
+                # RRF
+                fused_results = reciprocal_rank_fusion(
+                    dense_results,
+                    sparse_results
                 )
 
-            print("-----------------------")
+                # Cross-encoder
+                reranked_results = self.reranker.rerank(
+                    query,
+                    fused_results[:10],
+                    top_k=top_k
+                )
 
-            # 4. Cross-encoder reranking
-            reranked_results = self.reranker.rerank(
-                query,
-                fused_results[:10],
-                top_k=top_k
-            )
+                hop_results.extend(reranked_results)
 
-        
+            # Keep best result for each chunk within this hop
+            best_results = {}
 
-            # Store hop information
-            for result in reranked_results:
+            for result in hop_results:
+
+                chunk_id = result["chunk"]["id"]
+
+                if (
+                    chunk_id not in best_results
+                    or result["score"] > best_results[chunk_id]["score"]
+                ):
+                    best_results[chunk_id] = result
+
+            for result in best_results.values():
                 result["hop"] = hop
                 all_results.append(result)
 
+        # Your existing merge_and_dedupe()
         merged_results = merge_and_dedupe(all_results)
+
         return merged_results[:top_k]
 
 
