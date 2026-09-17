@@ -1,6 +1,7 @@
 from retrieval.multihop_retriever import MultiHopRetriever
 from generation.ollama_client import OllamaClient
 from generation.prompt_templates import build_synthesis_prompt
+from generation.grounding import validate_grounding
 
 
 class ThreatSynthesizer:
@@ -53,7 +54,29 @@ class ThreatSynthesizer:
             temperature=0.2
         )
 
-        return result
+        # Validate generated citations against retrieved chunks
+        validated_result, rejected_threats = validate_grounding(
+            result,
+            retrieved_chunks
+        )
+
+        # Display rejected threats for debugging
+        if rejected_threats:
+
+            print("\n========== REJECTED UNGROUNDED THREATS ==========")
+
+            for threat in rejected_threats:
+
+                print("Rejected:", threat.get("threat"))
+                print("Source ID:", threat.get("source_id"))
+                print("Source:", threat.get("source"))
+                print("Source Title:", threat.get("source_title"))
+                print("Reason:", threat.get("grounding_reason"))
+                print()
+
+            print("==================================================")
+
+        return validated_result
 
 
 if __name__ == "__main__":

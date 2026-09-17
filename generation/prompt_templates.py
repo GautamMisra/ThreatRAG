@@ -47,6 +47,68 @@ IMPORTANT GROUNDING RULES:
 8. Likelihood and impact are estimates made by the LLM based on the
    retrieved evidence. Clearly label them as estimates.
 9. Keep the answer concise and security-focused.
+10. The "stride_category" field MUST be exactly one of these six values:
+    Spoofing
+    Tampering
+    Repudiation
+    Information Disclosure
+    Denial of Service
+    Elevation of Privilege
+
+    Do NOT use MITRE ATT&CK tactics such as Credential Access,
+    Lateral Movement, Execution, Persistence, Defense Evasion,
+    Discovery, or Privilege Escalation as STRIDE categories.
+11. The "source_id" field MUST exactly match the complete "Chunk ID"
+    shown in the retrieved context.
+
+    For example:
+    If the retrieved chunk says:
+    Chunk ID: attack-T1134
+
+    You MUST output:
+    "source_id": "attack-T1134"
+
+    NOT:
+    "source_id": "T1134"
+
+    Similarly:
+    "attack-T1563.002" must remain exactly "attack-T1563.002".
+
+    Never remove prefixes such as "attack-", "owasp-", or "stride-".
+12. The source_id, source, and source_title MUST all refer to the SAME
+    retrieved chunk.
+
+    For example, if the retrieved context contains:
+
+    Chunk ID: attack-T1134
+    Source: MITRE_ATT&CK
+    Title: Access Token Manipulation
+
+    then a threat about Access Token Manipulation MUST use:
+
+    "source": "MITRE_ATT&CK",
+    "source_id": "attack-T1134",
+    "source_title": "Access Token Manipulation"
+
+    Do NOT use a Chunk ID belonging to a different threat or technique.
+
+13. The evidence field MUST be derived from the Content of the cited
+    chunk. Do not use evidence from another retrieved chunk.
+14. Do NOT generate a mitigation or recommendation unless it is explicitly
+    supported by the retrieved chunk(s). If the retrieved evidence does
+    not contain a mitigation, write:
+    "No mitigation supported by retrieved evidence."
+
+15. Do NOT infer or add cybersecurity knowledge from the model's own
+    knowledge, even if the recommendation is generally considered good
+    security practice.
+
+16. The stride_category MUST be one of:
+    Spoofing, Tampering, Repudiation, Information Disclosure,
+    Denial of Service, Elevation of Privilege.
+
+    If a retrieved threat does not clearly map to one of these categories,
+    do not include that threat.
 
 RETURN ONLY VALID JSON.
 
@@ -56,13 +118,14 @@ Use exactly this structure:
     "summary": "Brief summary of the main security risks supported by the retrieved evidence.",
     "threats": [
         {{
-            "stride_category": "One STRIDE category",
+            "stride_category": "One of: Spoofing, Tampering, Repudiation, Information Disclosure, Denial of Service, Elevation of Privilege",
             "threat": "Description of the threat",
             "likelihood": "LLM-estimated likelihood",
             "impact": "LLM-estimated impact",
             "mitigation": "Mitigation supported by the retrieved context",
-            "source": "Exact source name from the retrieved chunk",
+            "source": "MITRE_ATT&CK, STRIDE, or OWASP",
             "source_id": "Exact Chunk ID from the retrieved chunk",
+            "source_title": "Exact Title from the cited chunk",
             "evidence": "Relevant evidence from the cited chunk"
         }}
     ],
