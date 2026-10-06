@@ -1,8 +1,15 @@
 import json
+import os
 import requests
 
 
-OLLAMA_URL = "http://localhost:11434/api/generate"
+OLLAMA_BASE_URL = os.getenv(
+    "OLLAMA_BASE_URL",
+    "http://localhost:11434"
+)
+
+OLLAMA_URL = f"{OLLAMA_BASE_URL}/api/generate"
+
 MODEL = "phi4-mini"
 
 

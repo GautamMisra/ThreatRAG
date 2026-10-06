@@ -1,4 +1,5 @@
 services:
+
   postgres:
     image: pgvector/pgvector:pg16
     container_name: ThreatRAG-postgres
@@ -10,6 +11,25 @@ services:
       - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: ThreatRAG-backend
+    environment:
+      POSTGRES_DB: ThreatRAG
+      POSTGRES_USER: ThreatRAG
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      OLLAMA_BASE_URL: http://host.docker.internal:11434
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+
 
 volumes:
   postgres_data:

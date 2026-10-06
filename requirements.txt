@@ -2,3 +2,7 @@ sentence-transformers
 psycopg2-binary
 rank-bm25
 python-dotenv
+fastapi
+uvicorn
+pydantic
+requests
