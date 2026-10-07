@@ -1,5 +1,7 @@
 # pyrefly: ignore [missing-import]
 from fastapi import FastAPI, HTTPException
+# pyrefly: ignore [missing-import]
+from fastapi.middleware.cors import CORSMiddleware
 
 from backend.schemas import SystemDescription
 from generation.threat_synthesizer import ThreatSynthesizer
@@ -9,6 +11,15 @@ app = FastAPI(
     title="ThreatModel-RAG API",
     description="Hybrid RAG Threat Modeling Assistant",
     version="1.0.0"
+)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 

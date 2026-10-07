@@ -436,3 +436,23 @@ textarea:focus-visible {
     justify-self: start;
   }
 }
+
+.error-message {
+  margin-top: 16px;
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border: 1px solid #c8a6a1;
+  background: #fbf3f1;
+  color: #63251f;
+}
+
+.error-message strong {
+  display: block;
+  margin-top: 5px;
+  font-size: 13px;
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}

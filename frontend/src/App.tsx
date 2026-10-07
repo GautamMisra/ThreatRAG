@@ -1,6 +1,11 @@
 import { useState } from "react";
 import "./index.css";
 
+import {
+  analyzeSystem,
+  type AnalysisResponse,
+} from "./services/api";
+
 type Component = {
   id: number;
   name: string;
@@ -18,6 +23,10 @@ function App() {
   const [components, setComponents] = useState<Component[]>([]);
   const [dataFlows, setDataFlows] = useState<DataFlow[]>([]);
   const [trustBoundaries, setTrustBoundaries] = useState<string[]>([]);
+
+  const [analysis, setAnalysis] = useState<AnalysisResponse | null>(null);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const [componentName, setComponentName] = useState("");
   const [componentTechnology, setComponentTechnology] = useState("");
@@ -95,6 +104,44 @@ function App() {
     setTrustBoundaries((current) =>
       current.filter((_, i) => i !== index)
     );
+  }
+
+  async function handleAnalyze() {
+    if (components.length === 0) {
+      return;
+    }
+
+    setIsAnalyzing(true);
+    setError(null);
+    setAnalysis(null);
+
+    try {
+      const result = await analyzeSystem({
+        components: components.map(({ name, technology }) => ({
+          name,
+          technology,
+        })),
+        data_flows: dataFlows.map(
+          ({ source, destination, description }) => ({
+            source,
+            destination,
+            description,
+          })
+        ),
+        trust_boundaries: trustBoundaries,
+      });
+
+      setAnalysis(result);
+    } catch (err) {
+      const message =
+        err instanceof Error
+          ? err.message
+          : "An unexpected error occurred during analysis.";
+
+      setError(message);
+    } finally {
+      setIsAnalyzing(false);
+    }
   }
 
   return (
@@ -364,11 +411,28 @@ function App() {
           <button
             className="primary-button"
             type="button"
-            disabled={components.length === 0}
+            onClick={handleAnalyze}
+            disabled={components.length === 0 || isAnalyzing}
           >
-            Generate threat model
+            {isAnalyzing ? "Analyzing system..." : "Generate threat model"}
           </button>
         </section>
+        {error && (
+          <section className="error-message" role="alert">
+            <div>
+              <p className="section-label">ANALYSIS FAILED</p>
+              <strong>{error}</strong>
+            </div>
+
+            <button
+              className="remove-button"
+              type="button"
+              onClick={() => setError(null)}
+            >
+              Dismiss
+            </button>
+          </section>
+        )}
       </main>
     </div>
   );
