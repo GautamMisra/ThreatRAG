@@ -19,21 +19,29 @@ export type SystemDescription = {
 };
 
 export type Threat = {
-  stride_category?: string;
-  threat?: string;
-  likelihood?: string;
-  impact?: string;
-  mitigation?: string;
-  source?: string;
-  citation?: string;
-  technique?: string;
-  technique_id?: string;
+  stride_category: string;
+  threat: string;
+  likelihood: string;
+  impact: string;
+  mitigation: string;
+  source: string;
+  source_id: string;
+  source_title: string;
+  evidence: string;
+  grounded: boolean;
+};
+
+export type GroundingStats = {
+  total_threats_generated: number;
+  grounded_threats: number;
+  rejected_threats: number;
 };
 
 export type ThreatModel = {
-  summary?: string;
-  threats?: Threat[];
-  [key: string]: unknown;
+  summary: string;
+  threats: Threat[];
+  recommendations: string[];
+  grounding: GroundingStats;
 };
 
 export type ComponentAnalysis = {
