@@ -6,6 +6,8 @@ import {
   type AnalysisResponse,
 } from "./services/api";
 
+import ThreatModelView from "./components/ThreatModelView";
+
 type Component = {
   id: number;
   name: string;
@@ -432,6 +434,9 @@ function App() {
               Dismiss
             </button>
           </section>
+        )}
+        {analysis && (
+          <ThreatModelView analysis={analysis} />
         )}
       </main>
     </div>
