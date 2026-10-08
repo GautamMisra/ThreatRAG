@@ -396,6 +396,27 @@ function App() {
           </div>
         </section>
 
+        {isAnalyzing && (
+          <section className="analysis-progress" aria-live="polite">
+            <div className="progress-indicator" />
+
+            <div>
+              <p className="section-label">
+                ANALYSIS IN PROGRESS
+              </p>
+
+              <strong>
+                Retrieving and synthesizing security evidence
+              </strong>
+
+              <span>
+                The local RAG pipeline is analyzing the submitted
+                architecture.
+              </span>
+            </div>
+          </section>
+        )}
+
         {/* Analysis */}
         <section className="analysis-section">
           <div>

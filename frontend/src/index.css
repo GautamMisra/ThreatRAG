@@ -888,3 +888,47 @@ textarea:focus-visible {
     padding-right: 18px;
   }
 }
+
+/* ================================
+   Analysis progress
+   ================================ */
+
+.analysis-progress {
+  margin-top: 16px;
+  padding: 17px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border: 1px solid #d8d6ce;
+  background: #fbfaf7;
+}
+
+.progress-indicator {
+  width: 10px;
+  height: 10px;
+  flex-shrink: 0;
+  border: 1px solid #77756d;
+  border-top-color: #1c1c1a;
+  border-radius: 50%;
+  animation: analysis-spin 0.8s linear infinite;
+}
+
+.analysis-progress strong {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.analysis-progress span {
+  display: block;
+  margin-top: 3px;
+  color: #77756d;
+  font-size: 11px;
+}
+
+@keyframes analysis-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
