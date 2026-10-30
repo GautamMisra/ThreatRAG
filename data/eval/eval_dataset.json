@@ -1,0 +1,661 @@
+[
+    {
+        "id": "eval_01",
+        "name": "JWT Authentication Service",
+        "description": "A web application uses an Auth Service to authenticate users. The service issues JWT access tokens after login. Clients send the JWT in the Authorization header when calling protected APIs. User credentials are stored in PostgreSQL.",
+        "components": [
+            {
+                "name": "Auth Service",
+                "technology": "JWT"
+            },
+            {
+                "name": "User Database",
+                "technology": "PostgreSQL"
+            }
+        ],
+        "data_flows": [
+            {
+                "source": "Client",
+                "destination": "Auth Service",
+                "description": "User submits credentials and receives a JWT access token"
+            },
+            {
+                "source": "Auth Service",
+                "destination": "User Database",
+                "description": "Authentication service reads user credentials"
+            },
+            {
+                "source": "Client",
+                "destination": "Protected API",
+                "description": "Client sends JWT access token in Authorization header"
+            }
+        ],
+        "trust_boundaries": [
+            "Client to backend",
+            "Backend to database"
+        ],
+        "expected_threats": [
+            {
+                "stride": "Spoofing",
+                "keywords": [
+                    "credential theft",
+                    "credential stuffing",
+                    "account impersonation"
+                ]
+            },
+            {
+                "stride": "Elevation of Privilege",
+                "keywords": [
+                    "JWT manipulation",
+                    "token manipulation",
+                    "privilege escalation"
+                ]
+            },
+            {
+                "stride": "Information Disclosure",
+                "keywords": [
+                    "token theft",
+                    "access token exposure"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "eval_02",
+        "name": "SQL Login API",
+        "description": "A REST API provides a login endpoint. The API receives username and password parameters and queries a PostgreSQL database to authenticate the user. User input is directly used in database queries.",
+        "components": [
+            {
+                "name": "Login API",
+                "technology": "REST"
+            },
+            {
+                "name": "User Database",
+                "technology": "PostgreSQL"
+            }
+        ],
+        "data_flows": [
+            {
+                "source": "Client",
+                "destination": "Login API",
+                "description": "Client submits username and password"
+            },
+            {
+                "source": "Login API",
+                "destination": "User Database",
+                "description": "API queries the database using authentication input"
+            }
+        ],
+        "trust_boundaries": [
+            "Internet to Login API",
+            "Login API to database"
+        ],
+        "expected_threats": [
+            {
+                "stride": "Tampering",
+                "keywords": [
+                    "SQL injection",
+                    "database query injection",
+                    "input injection"
+                ]
+            },
+            {
+                "stride": "Information Disclosure",
+                "keywords": [
+                    "database information disclosure",
+                    "data extraction"
+                ]
+            },
+            {
+                "stride": "Spoofing",
+                "keywords": [
+                    "authentication bypass",
+                    "login bypass"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "eval_03",
+        "name": "File Upload Service",
+        "description": "A web application allows authenticated users to upload profile images and documents. Uploaded files are stored on a server and later served back to users through the web application.",
+        "components": [
+            {
+                "name": "File Upload API",
+                "technology": "HTTP"
+            },
+            {
+                "name": "File Storage",
+                "technology": "Local Storage"
+            }
+        ],
+        "data_flows": [
+            {
+                "source": "User",
+                "destination": "File Upload API",
+                "description": "User uploads an image or document"
+            },
+            {
+                "source": "File Upload API",
+                "destination": "File Storage",
+                "description": "API stores the uploaded file"
+            },
+            {
+                "source": "File Storage",
+                "destination": "User",
+                "description": "Stored files are served back to users"
+            }
+        ],
+        "trust_boundaries": [
+            "Internet to upload API",
+            "Application to file storage"
+        ],
+        "expected_threats": [
+            {
+                "stride": "Tampering",
+                "keywords": [
+                    "malicious file upload",
+                    "file upload",
+                    "arbitrary file"
+                ]
+            },
+            {
+                "stride": "Elevation of Privilege",
+                "keywords": [
+                    "code execution",
+                    "uploaded executable",
+                    "server compromise"
+                ]
+            },
+            {
+                "stride": "Information Disclosure",
+                "keywords": [
+                    "unauthorized file access",
+                    "sensitive file disclosure"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "eval_04",
+        "name": "E-Commerce Application",
+        "description": "An e-commerce web application has a frontend, REST API and PostgreSQL database. Users can browse products, manage carts and place orders. The API uses JWT authentication.",
+        "components": [
+            {
+                "name": "Web Frontend",
+                "technology": "React"
+            },
+            {
+                "name": "E-Commerce API",
+                "technology": "REST + JWT"
+            },
+            {
+                "name": "Order Database",
+                "technology": "PostgreSQL"
+            }
+        ],
+        "data_flows": [
+            {
+                "source": "User",
+                "destination": "Web Frontend",
+                "description": "User browses products and manages a shopping cart"
+            },
+            {
+                "source": "Web Frontend",
+                "destination": "E-Commerce API",
+                "description": "Frontend sends authenticated API requests"
+            },
+            {
+                "source": "E-Commerce API",
+                "destination": "Order Database",
+                "description": "API reads and writes orders"
+            }
+        ],
+        "trust_boundaries": [
+            "User to frontend",
+            "Frontend to API",
+            "API to database"
+        ],
+        "expected_threats": [
+            {
+                "stride": "Tampering",
+                "keywords": [
+                    "SQL injection",
+                    "input manipulation"
+                ]
+            },
+            {
+                "stride": "Spoofing",
+                "keywords": [
+                    "credential theft",
+                    "account takeover"
+                ]
+            },
+            {
+                "stride": "Elevation of Privilege",
+                "keywords": [
+                    "privilege escalation",
+                    "authorization bypass"
+                ]
+            },
+            {
+                "stride": "Information Disclosure",
+                "keywords": [
+                    "sensitive customer data",
+                    "data exposure"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "eval_05",
+        "name": "Admin Dashboard",
+        "description": "An administrative dashboard is protected using JWT authentication and role-based access control. Administrators can view users, modify accounts and manage application configuration.",
+        "components": [
+            {
+                "name": "Admin Dashboard",
+                "technology": "React + JWT"
+            },
+            {
+                "name": "Admin API",
+                "technology": "REST"
+            }
+        ],
+        "data_flows": [
+            {
+                "source": "Administrator",
+                "destination": "Admin Dashboard",
+                "description": "Administrator accesses the management interface"
+            },
+            {
+                "source": "Admin Dashboard",
+                "destination": "Admin API",
+                "description": "Dashboard sends authenticated administrative requests"
+            }
+        ],
+        "trust_boundaries": [
+            "Administrator to dashboard",
+            "Dashboard to admin API"
+        ],
+        "expected_threats": [
+            {
+                "stride": "Elevation of Privilege",
+                "keywords": [
+                    "privilege escalation",
+                    "role manipulation",
+                    "authorization bypass"
+                ]
+            },
+            {
+                "stride": "Spoofing",
+                "keywords": [
+                    "administrator impersonation",
+                    "credential theft"
+                ]
+            },
+            {
+                "stride": "Tampering",
+                "keywords": [
+                    "unauthorized configuration changes",
+                    "account modification"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "eval_06",
+        "name": "Microservice Architecture",
+        "description": "A web application uses an API Gateway in front of multiple backend microservices. Services communicate internally over HTTP. JWT tokens are passed through the gateway to authenticate requests.",
+        "components": [
+            {
+                "name": "API Gateway",
+                "technology": "HTTP"
+            },
+            {
+                "name": "Auth Service",
+                "technology": "JWT"
+            },
+            {
+                "name": "Order Service",
+                "technology": "REST"
+            },
+            {
+                "name": "Payment Service",
+                "technology": "REST"
+            }
+        ],
+        "data_flows": [
+            {
+                "source": "Client",
+                "destination": "API Gateway",
+                "description": "Client sends JWT-authenticated requests"
+            },
+            {
+                "source": "API Gateway",
+                "destination": "Auth Service",
+                "description": "Gateway validates authentication information"
+            },
+            {
+                "source": "API Gateway",
+                "destination": "Order Service",
+                "description": "Gateway forwards order requests"
+            },
+            {
+                "source": "API Gateway",
+                "destination": "Payment Service",
+                "description": "Gateway forwards payment requests"
+            }
+        ],
+        "trust_boundaries": [
+            "Internet to API Gateway",
+            "Gateway to internal services"
+        ],
+        "expected_threats": [
+            {
+                "stride": "Spoofing",
+                "keywords": [
+                    "token theft",
+                    "service impersonation"
+                ]
+            },
+            {
+                "stride": "Tampering",
+                "keywords": [
+                    "request manipulation",
+                    "message tampering"
+                ]
+            },
+            {
+                "stride": "Elevation of Privilege",
+                "keywords": [
+                    "service authorization bypass",
+                    "privilege escalation"
+                ]
+            },
+            {
+                "stride": "Repudiation",
+                "keywords": [
+                    "insufficient logging",
+                    "audit failure"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "eval_07",
+        "name": "Cloud Storage API",
+        "description": "A backend API allows authenticated users to upload and download documents stored in an AWS S3 bucket. The application uses IAM permissions to access the bucket.",
+        "components": [
+            {
+                "name": "Storage API",
+                "technology": "REST"
+            },
+            {
+                "name": "Object Storage",
+                "technology": "AWS S3"
+            },
+            {
+                "name": "Identity Service",
+                "technology": "IAM"
+            }
+        ],
+        "data_flows": [
+            {
+                "source": "User",
+                "destination": "Storage API",
+                "description": "Authenticated user uploads or downloads documents"
+            },
+            {
+                "source": "Storage API",
+                "destination": "Object Storage",
+                "description": "API reads and writes S3 objects"
+            },
+            {
+                "source": "Storage API",
+                "destination": "Identity Service",
+                "description": "API uses IAM permissions for cloud resources"
+            }
+        ],
+        "trust_boundaries": [
+            "User to Storage API",
+            "Application to AWS resources"
+        ],
+        "expected_threats": [
+            {
+                "stride": "Information Disclosure",
+                "keywords": [
+                    "data exposure",
+                    "public bucket",
+                    "unauthorized object access"
+                ]
+            },
+            {
+                "stride": "Elevation of Privilege",
+                "keywords": [
+                    "excessive IAM permissions",
+                    "privilege escalation"
+                ]
+            },
+            {
+                "stride": "Tampering",
+                "keywords": [
+                    "unauthorized object modification",
+                    "file modification"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "eval_08",
+        "name": "Payment Service",
+        "description": "An application contains a payment service that receives payment information from the frontend and communicates with an external payment provider. Transactions are stored in a PostgreSQL database.",
+        "components": [
+            {
+                "name": "Payment API",
+                "technology": "REST"
+            },
+            {
+                "name": "Payment Provider",
+                "technology": "External API"
+            },
+            {
+                "name": "Transaction Database",
+                "technology": "PostgreSQL"
+            }
+        ],
+        "data_flows": [
+            {
+                "source": "Frontend",
+                "destination": "Payment API",
+                "description": "Frontend submits payment information"
+            },
+            {
+                "source": "Payment API",
+                "destination": "Payment Provider",
+                "description": "Payment API sends transaction information to the provider"
+            },
+            {
+                "source": "Payment API",
+                "destination": "Transaction Database",
+                "description": "API stores transaction records"
+            }
+        ],
+        "trust_boundaries": [
+            "Frontend to payment API",
+            "Payment API to external provider",
+            "Payment API to database"
+        ],
+        "expected_threats": [
+            {
+                "stride": "Tampering",
+                "keywords": [
+                    "transaction manipulation",
+                    "payment manipulation"
+                ]
+            },
+            {
+                "stride": "Information Disclosure",
+                "keywords": [
+                    "payment information exposure",
+                    "sensitive financial data"
+                ]
+            },
+            {
+                "stride": "Spoofing",
+                "keywords": [
+                    "payment provider impersonation",
+                    "credential theft"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "eval_09",
+        "name": "IoT Device Backend",
+        "description": "IoT devices communicate with a backend using MQTT. Devices authenticate using credentials before publishing sensor data. The backend stores received sensor data in a database.",
+        "components": [
+            {
+                "name": "IoT Device",
+                "technology": "MQTT"
+            },
+            {
+                "name": "IoT Backend",
+                "technology": "MQTT + REST"
+            },
+            {
+                "name": "Sensor Database",
+                "technology": "PostgreSQL"
+            }
+        ],
+        "data_flows": [
+            {
+                "source": "IoT Device",
+                "destination": "IoT Backend",
+                "description": "Device publishes authenticated sensor data using MQTT"
+            },
+            {
+                "source": "IoT Backend",
+                "destination": "Sensor Database",
+                "description": "Backend stores sensor data"
+            }
+        ],
+        "trust_boundaries": [
+            "IoT device network to backend",
+            "Backend to database"
+        ],
+        "expected_threats": [
+            {
+                "stride": "Spoofing",
+                "keywords": [
+                    "device impersonation",
+                    "credential theft"
+                ]
+            },
+            {
+                "stride": "Tampering",
+                "keywords": [
+                    "sensor data manipulation",
+                    "message tampering"
+                ]
+            },
+            {
+                "stride": "Information Disclosure",
+                "keywords": [
+                    "sensor data exposure",
+                    "unauthorized data access"
+                ]
+            },
+            {
+                "stride": "Denial of Service",
+                "keywords": [
+                    "MQTT flooding",
+                    "message flooding",
+                    "service disruption"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "eval_10",
+        "name": "CI/CD Deployment Pipeline",
+        "description": "A CI/CD pipeline automatically builds a Docker image from a GitHub repository and deploys it to a production server. The pipeline uses repository secrets and deployment credentials.",
+        "components": [
+            {
+                "name": "GitHub Repository",
+                "technology": "Git"
+            },
+            {
+                "name": "CI/CD Pipeline",
+                "technology": "GitHub Actions"
+            },
+            {
+                "name": "Container Registry",
+                "technology": "Docker"
+            },
+            {
+                "name": "Production Server",
+                "technology": "Docker"
+            }
+        ],
+        "data_flows": [
+            {
+                "source": "Developer",
+                "destination": "GitHub Repository",
+                "description": "Developer pushes application code"
+            },
+            {
+                "source": "GitHub Repository",
+                "destination": "CI/CD Pipeline",
+                "description": "Pipeline retrieves source code and runs builds"
+            },
+            {
+                "source": "CI/CD Pipeline",
+                "destination": "Container Registry",
+                "description": "Pipeline pushes the built Docker image"
+            },
+            {
+                "source": "CI/CD Pipeline",
+                "destination": "Production Server",
+                "description": "Pipeline deploys the container to production"
+            }
+        ],
+        "trust_boundaries": [
+            "Developer to GitHub",
+            "GitHub to CI/CD",
+            "CI/CD to production"
+        ],
+        "expected_threats": [
+            {
+                "stride": "Tampering",
+                "keywords": [
+                    "malicious code",
+                    "repository modification",
+                    "pipeline modification"
+                ]
+            },
+            {
+                "stride": "Elevation of Privilege",
+                "keywords": [
+                    "compromised pipeline",
+                    "privilege escalation",
+                    "deployment credentials"
+                ]
+            },
+            {
+                "stride": "Information Disclosure",
+                "keywords": [
+                    "secret exposure",
+                    "credential exposure",
+                    "repository secrets"
+                ]
+            },
+            {
+                "stride": "Spoofing",
+                "keywords": [
+                    "compromised developer account",
+                    "account impersonation"
+                ]
+            }
+        ]
+    }
+]

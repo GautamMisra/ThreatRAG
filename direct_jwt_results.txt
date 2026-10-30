@@ -1,0 +1,172 @@
+Loading embedding model...
+Building BM25 indexes...
+Loading data\processed\attack_chunks.json...
+Loading data\processed\owasp_chunks.json...
+Loading data\processed\stride_chunks.json...
+Loaded 888 total chunks.
+BM25 indexes built.
+Loading cross-encoder model...
+Cross-encoder loaded.
+
+=================================================================
+QUERY: JWT token validation
+SOURCE: OWASP
+Searching for: JWT token validation
+
+DENSE:
+  Result keys: ['id', 'source', 'title', 'text', 'tags', 'score']
+  ID: owasp-a08 | Title: A08:2025 – Software and Data Integrity Failures | Score: 0.6021545112775123
+  Result keys: ['id', 'source', 'title', 'text', 'tags', 'score']
+  ID: owasp-a07 | Title: A07:2025 – Authentication Failures | Score: 0.5788008225678918
+  Result keys: ['id', 'source', 'title', 'text', 'tags', 'score']
+  ID: owasp-a01 | Title: A01:2025 – Broken Access Control | Score: 0.5775946378707886
+  Result keys: ['id', 'source', 'title', 'text', 'tags', 'score']
+  ID: owasp-a10 | Title: A10:2025 – Mishandling of Exceptional Conditions | Score: 0.5685091018676758
+  Result keys: ['id', 'source', 'title', 'text', 'tags', 'score']
+  ID: owasp-a09 | Title: A09:2025 – Security Logging and Alerting Failures | Score: 0.5648128986358643
+
+BM25:
+  Result keys: ['chunk', 'score']
+  ID: owasp-cheatsheet-threat-identification | Title: Threat Identification | Score: 3.0268874010998608
+  Result keys: ['chunk', 'score']
+  ID: owasp-a05 | Title: A05:2025 – Injection | Score: 2.3463844813522083
+  Result keys: ['chunk', 'score']
+  ID: owasp-a09 | Title: A09:2025 – Security Logging and Alerting Failures | Score: 2.2633617719717574
+
+FUSED:
+  Result keys: ['chunk', 'score']
+  ID: owasp-a09 | Title: A09:2025 – Security Logging and Alerting Failures | Score: 0.03125763125763126
+  Result keys: ['chunk', 'score']
+  ID: owasp-a08 | Title: A08:2025 – Software and Data Integrity Failures | Score: 0.01639344262295082
+  Result keys: ['chunk', 'score']
+  ID: owasp-cheatsheet-threat-identification | Title: Threat Identification | Score: 0.01639344262295082
+  Result keys: ['chunk', 'score']
+  ID: owasp-a07 | Title: A07:2025 – Authentication Failures | Score: 0.016129032258064516
+  Result keys: ['chunk', 'score']
+  ID: owasp-a05 | Title: A05:2025 – Injection | Score: 0.016129032258064516
+  Result keys: ['chunk', 'score']
+  ID: owasp-a01 | Title: A01:2025 – Broken Access Control | Score: 0.015873015873015872
+  Result keys: ['chunk', 'score']
+  ID: owasp-a10 | Title: A10:2025 – Mishandling of Exceptional Conditions | Score: 0.015625
+
+RERANKED:
+  Result keys: ['chunk', 'score']
+  ID: owasp-cheatsheet-threat-identification | Title: Threat Identification | Score: -3.6614537239074707
+  Result keys: ['chunk', 'score']
+  ID: owasp-a07 | Title: A07:2025 – Authentication Failures | Score: -8.59190559387207
+  Result keys: ['chunk', 'score']
+  ID: owasp-a08 | Title: A08:2025 – Software and Data Integrity Failures | Score: -9.31617546081543
+  Result keys: ['chunk', 'score']
+  ID: owasp-a01 | Title: A01:2025 – Broken Access Control | Score: -10.018546104431152
+  Result keys: ['chunk', 'score']
+  ID: owasp-a09 | Title: A09:2025 – Security Logging and Alerting Failures | Score: -10.348087310791016
+
+=================================================================
+QUERY: JWT authentication token signature verification
+SOURCE: OWASP
+Searching for: JWT authentication token signature verification
+
+DENSE:
+  Result keys: ['id', 'source', 'title', 'text', 'tags', 'score']
+  ID: owasp-a08 | Title: A08:2025 – Software and Data Integrity Failures | Score: 0.6414013100088036
+  Result keys: ['id', 'source', 'title', 'text', 'tags', 'score']
+  ID: owasp-a07 | Title: A07:2025 – Authentication Failures | Score: 0.6136782995654176
+  Result keys: ['id', 'source', 'title', 'text', 'tags', 'score']
+  ID: owasp-a01 | Title: A01:2025 – Broken Access Control | Score: 0.5817266702651978
+  Result keys: ['id', 'source', 'title', 'text', 'tags', 'score']
+  ID: owasp-a09 | Title: A09:2025 – Security Logging and Alerting Failures | Score: 0.5672777891159058
+  Result keys: ['id', 'source', 'title', 'text', 'tags', 'score']
+  ID: owasp-a03 | Title: A03:2025 – Software Supply Chain Failures | Score: 0.5490589737892151
+
+BM25:
+  Result keys: ['chunk', 'score']
+  ID: owasp-cheatsheet-threat-identification | Title: Threat Identification | Score: 5.10700191194253
+  Result keys: ['chunk', 'score']
+  ID: owasp-a07 | Title: A07:2025 – Authentication Failures | Score: 2.8318696108766996
+  Result keys: ['chunk', 'score']
+  ID: owasp-a10 | Title: A10:2025 – Mishandling of Exceptional Conditions | Score: 1.7415521058104668
+
+FUSED:
+  Result keys: ['chunk', 'score']
+  ID: owasp-a07 | Title: A07:2025 – Authentication Failures | Score: 0.03225806451612903
+  Result keys: ['chunk', 'score']
+  ID: owasp-a08 | Title: A08:2025 – Software and Data Integrity Failures | Score: 0.01639344262295082
+  Result keys: ['chunk', 'score']
+  ID: owasp-cheatsheet-threat-identification | Title: Threat Identification | Score: 0.01639344262295082
+  Result keys: ['chunk', 'score']
+  ID: owasp-a01 | Title: A01:2025 – Broken Access Control | Score: 0.015873015873015872
+  Result keys: ['chunk', 'score']
+  ID: owasp-a10 | Title: A10:2025 – Mishandling of Exceptional Conditions | Score: 0.015873015873015872
+  Result keys: ['chunk', 'score']
+  ID: owasp-a09 | Title: A09:2025 – Security Logging and Alerting Failures | Score: 0.015625
+  Result keys: ['chunk', 'score']
+  ID: owasp-a03 | Title: A03:2025 – Software Supply Chain Failures | Score: 0.015384615384615385
+
+RERANKED:
+  Result keys: ['chunk', 'score']
+  ID: owasp-cheatsheet-threat-identification | Title: Threat Identification | Score: -3.6584792137145996
+  Result keys: ['chunk', 'score']
+  ID: owasp-a08 | Title: A08:2025 – Software and Data Integrity Failures | Score: -4.745484352111816
+  Result keys: ['chunk', 'score']
+  ID: owasp-a07 | Title: A07:2025 – Authentication Failures | Score: -6.273591041564941
+  Result keys: ['chunk', 'score']
+  ID: owasp-a03 | Title: A03:2025 – Software Supply Chain Failures | Score: -10.028742790222168
+  Result keys: ['chunk', 'score']
+  ID: owasp-a01 | Title: A01:2025 – Broken Access Control | Score: -10.400861740112305
+
+=================================================================
+QUERY: JWT token theft
+SOURCE: MITRE_ATT&CK
+Searching for: JWT token theft
+
+DENSE:
+  Result keys: ['id', 'source', 'title', 'text', 'tags', 'score']
+  ID: attack-T1134.001 | Title: Token Impersonation/Theft | Score: 0.6916251366361906
+  Result keys: ['id', 'source', 'title', 'text', 'tags', 'score']
+  ID: attack-T1134.003 | Title: Make and Impersonate Token | Score: 0.6537472812087975
+  Result keys: ['id', 'source', 'title', 'text', 'tags', 'score']
+  ID: attack-T1539 | Title: Steal Web Session Cookie | Score: 0.6375372599821537
+  Result keys: ['id', 'source', 'title', 'text', 'tags', 'score']
+  ID: attack-T1528 | Title: Steal Application Access Token | Score: 0.6361561851315277
+  Result keys: ['id', 'source', 'title', 'text', 'tags', 'score']
+  ID: attack-T1558.004 | Title: AS-REP Roasting | Score: 0.63256482384906
+
+BM25:
+  Result keys: ['chunk', 'score']
+  ID: attack-T1528 | Title: Steal Application Access Token | Score: 8.788549725812782
+  Result keys: ['chunk', 'score']
+  ID: attack-T1134.002 | Title: Create Process with Token | Score: 8.545779134995623
+  Result keys: ['chunk', 'score']
+  ID: attack-T1657 | Title: Financial Theft | Score: 8.520526820510957
+  Result keys: ['chunk', 'score']
+  ID: attack-T1134.001 | Title: Token Impersonation/Theft | Score: 8.346928932664795
+  Result keys: ['chunk', 'score']
+  ID: attack-T1134.003 | Title: Make and Impersonate Token | Score: 7.925820163435895
+
+FUSED:
+  Result keys: ['chunk', 'score']
+  ID: attack-T1134.001 | Title: Token Impersonation/Theft | Score: 0.032018442622950824
+  Result keys: ['chunk', 'score']
+  ID: attack-T1528 | Title: Steal Application Access Token | Score: 0.032018442622950824
+  Result keys: ['chunk', 'score']
+  ID: attack-T1134.003 | Title: Make and Impersonate Token | Score: 0.0315136476426799
+  Result keys: ['chunk', 'score']
+  ID: attack-T1134.002 | Title: Create Process with Token | Score: 0.016129032258064516
+  Result keys: ['chunk', 'score']
+  ID: attack-T1539 | Title: Steal Web Session Cookie | Score: 0.015873015873015872
+  Result keys: ['chunk', 'score']
+  ID: attack-T1657 | Title: Financial Theft | Score: 0.015873015873015872
+  Result keys: ['chunk', 'score']
+  ID: attack-T1558.004 | Title: AS-REP Roasting | Score: 0.015384615384615385
+
+RERANKED:
+  Result keys: ['chunk', 'score']
+  ID: attack-T1528 | Title: Steal Application Access Token | Score: -0.01648794859647751
+  Result keys: ['chunk', 'score']
+  ID: attack-T1134.001 | Title: Token Impersonation/Theft | Score: -1.053601622581482
+  Result keys: ['chunk', 'score']
+  ID: attack-T1134.003 | Title: Make and Impersonate Token | Score: -2.3818469047546387
+  Result keys: ['chunk', 'score']
+  ID: attack-T1134.002 | Title: Create Process with Token | Score: -3.6704392433166504
+  Result keys: ['chunk', 'score']
+  ID: attack-T1657 | Title: Financial Theft | Score: -4.482494354248047

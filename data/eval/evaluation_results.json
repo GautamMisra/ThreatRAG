@@ -1,0 +1,550 @@
+{
+  "systems_evaluated": 10,
+  "expected_threats": 34,
+  "generated_threats": 1,
+  "correct_matches": 0,
+  "misses": 34,
+  "overall_precision": 0.0,
+  "overall_recall": 0.0,
+  "results": [
+    {
+      "id": "eval_01",
+      "name": "JWT Authentication Service",
+      "status": "SUCCESS",
+      "expected": 3,
+      "generated": 0,
+      "hits": 0,
+      "misses": 3,
+      "precision": 0.0,
+      "recall": 0.0,
+      "matches": [
+        {
+          "expected": {
+            "stride": "Spoofing",
+            "keywords": [
+              "credential theft",
+              "credential stuffing",
+              "account impersonation"
+            ]
+          },
+          "generated": null,
+          "matched": false
+        },
+        {
+          "expected": {
+            "stride": "Elevation of Privilege",
+            "keywords": [
+              "JWT manipulation",
+              "token manipulation",
+              "privilege escalation"
+            ]
+          },
+          "generated": null,
+          "matched": false
+        },
+        {
+          "expected": {
+            "stride": "Information Disclosure",
+            "keywords": [
+              "token theft",
+              "access token exposure"
+            ]
+          },
+          "generated": null,
+          "matched": false
+        }
+      ],
+      "generated_threats": []
+    },
+    {
+      "id": "eval_02",
+      "name": "SQL Login API",
+      "status": "SUCCESS",
+      "expected": 3,
+      "generated": 0,
+      "hits": 0,
+      "misses": 3,
+      "precision": 0.0,
+      "recall": 0.0,
+      "matches": [
+        {
+          "expected": {
+            "stride": "Tampering",
+            "keywords": [
+              "SQL injection",
+              "database query injection",
+              "input injection"
+            ]
+          },
+          "generated": null,
+          "matched": false
+        },
+        {
+          "expected": {
+            "stride": "Information Disclosure",
+            "keywords": [
+              "database information disclosure",
+              "data extraction"
+            ]
+          },
+          "generated": null,
+          "matched": false
+        },
+        {
+          "expected": {
+            "stride": "Spoofing",
+            "keywords": [
+              "authentication bypass",
+              "login bypass"
+            ]
+          },
+          "generated": null,
+          "matched": false
+        }
+      ],
+      "generated_threats": []
+    },
+    {
+      "id": "eval_03",
+      "name": "File Upload Service",
+      "status": "SUCCESS",
+      "expected": 3,
+      "generated": 0,
+      "hits": 0,
+      "misses": 3,
+      "precision": 0.0,
+      "recall": 0.0,
+      "matches": [
+        {
+          "expected": {
+            "stride": "Tampering",
+            "keywords": [
+              "malicious file upload",
+              "file upload",
+              "arbitrary file"
+            ]
+          },
+          "generated": null,
+          "matched": false
+        },
+        {
+          "expected": {
+            "stride": "Elevation of Privilege",
+            "keywords": [
+              "code execution",
+              "uploaded executable",
+              "server compromise"
+            ]
+          },
+          "generated": null,
+          "matched": false
+        },
+        {
+          "expected": {
+            "stride": "Information Disclosure",
+            "keywords": [
+              "unauthorized file access",
+              "sensitive file disclosure"
+            ]
+          },
+          "generated": null,
+          "matched": false
+        }
+      ],
+      "generated_threats": []
+    },
+    {
+      "id": "eval_04",
+      "name": "E-Commerce Application",
+      "status": "SUCCESS",
+      "expected": 4,
+      "generated": 1,
+      "hits": 0,
+      "misses": 4,
+      "precision": 0.0,
+      "recall": 0.0,
+      "matches": [
+        {
+          "expected": {
+            "stride": "Tampering",
+            "keywords": [
+              "SQL injection",
+              "input manipulation"
+            ]
+          },
+          "generated": null,
+          "matched": false
+        },
+        {
+          "expected": {
+            "stride": "Spoofing",
+            "keywords": [
+              "credential theft",
+              "account takeover"
+            ]
+          },
+          "generated": null,
+          "matched": false
+        },
+        {
+          "expected": {
+            "stride": "Elevation of Privilege",
+            "keywords": [
+              "privilege escalation",
+              "authorization bypass"
+            ]
+          },
+          "generated": null,
+          "matched": false
+        },
+        {
+          "expected": {
+            "stride": "Information Disclosure",
+            "keywords": [
+              "sensitive customer data",
+              "data exposure"
+            ]
+          },
+          "generated": null,
+          "matched": false
+        }
+      ],
+      "generated_threats": [
+        {
+          "stride_category": "Denial of Service",
+          "threat": "Denial of Service through API flooding or resource exhaustion",
+          "likelihood": "Medium",
+          "impact": "High",
+          "mitigation": "Implement rate limiting, use API keys, and monitor for unusual activity.",
+          "source": "STRIDE",
+          "source_id": "stride-denial-of-service",
+          "source_title": "Denial of Service",
+          "evidence": "Adversaries may prevent legitimate users from accessing a system or resource by flooding an API with requests or exhausting server resources.",
+          "grounded": true,
+          "_component": "E-Commerce API"
+        }
+      ]
+    },
+    {
+      "id": "eval_05",
+      "name": "Admin Dashboard",
+      "status": "SUCCESS",
+      "expected": 3,
+      "generated": 0,
+      "hits": 0,
+      "misses": 3,
+      "precision": 0.0,
+      "recall": 0.0,
+      "matches": [
+        {
+          "expected": {
+            "stride": "Elevation of Privilege",
+            "keywords": [
+              "privilege escalation",
+              "role manipulation",
+              "authorization bypass"
+            ]
+          },
+          "generated": null,
+          "matched": false
+        },
+        {
+          "expected": {
+            "stride": "Spoofing",
+            "keywords": [
+              "administrator impersonation",
+              "credential theft"
+            ]
+          },
+          "generated": null,
+          "matched": false
+        },
+        {
+          "expected": {
+            "stride": "Tampering",
+            "keywords": [
+              "unauthorized configuration changes",
+              "account modification"
+            ]
+          },
+          "generated": null,
+          "matched": false
+        }
+      ],
+      "generated_threats": []
+    },
+    {
+      "id": "eval_06",
+      "name": "Microservice Architecture",
+      "status": "SUCCESS",
+      "expected": 4,
+      "generated": 0,
+      "hits": 0,
+      "misses": 4,
+      "precision": 0.0,
+      "recall": 0.0,
+      "matches": [
+        {
+          "expected": {
+            "stride": "Spoofing",
+            "keywords": [
+              "token theft",
+              "service impersonation"
+            ]
+          },
+          "generated": null,
+          "matched": false
+        },
+        {
+          "expected": {
+            "stride": "Tampering",
+            "keywords": [
+              "request manipulation",
+              "message tampering"
+            ]
+          },
+          "generated": null,
+          "matched": false
+        },
+        {
+          "expected": {
+            "stride": "Elevation of Privilege",
+            "keywords": [
+              "service authorization bypass",
+              "privilege escalation"
+            ]
+          },
+          "generated": null,
+          "matched": false
+        },
+        {
+          "expected": {
+            "stride": "Repudiation",
+            "keywords": [
+              "insufficient logging",
+              "audit failure"
+            ]
+          },
+          "generated": null,
+          "matched": false
+        }
+      ],
+      "generated_threats": []
+    },
+    {
+      "id": "eval_07",
+      "name": "Cloud Storage API",
+      "status": "SUCCESS",
+      "expected": 3,
+      "generated": 0,
+      "hits": 0,
+      "misses": 3,
+      "precision": 0.0,
+      "recall": 0.0,
+      "matches": [
+        {
+          "expected": {
+            "stride": "Information Disclosure",
+            "keywords": [
+              "data exposure",
+              "public bucket",
+              "unauthorized object access"
+            ]
+          },
+          "generated": null,
+          "matched": false
+        },
+        {
+          "expected": {
+            "stride": "Elevation of Privilege",
+            "keywords": [
+              "excessive IAM permissions",
+              "privilege escalation"
+            ]
+          },
+          "generated": null,
+          "matched": false
+        },
+        {
+          "expected": {
+            "stride": "Tampering",
+            "keywords": [
+              "unauthorized object modification",
+              "file modification"
+            ]
+          },
+          "generated": null,
+          "matched": false
+        }
+      ],
+      "generated_threats": []
+    },
+    {
+      "id": "eval_08",
+      "name": "Payment Service",
+      "status": "SUCCESS",
+      "expected": 3,
+      "generated": 0,
+      "hits": 0,
+      "misses": 3,
+      "precision": 0.0,
+      "recall": 0.0,
+      "matches": [
+        {
+          "expected": {
+            "stride": "Tampering",
+            "keywords": [
+              "transaction manipulation",
+              "payment manipulation"
+            ]
+          },
+          "generated": null,
+          "matched": false
+        },
+        {
+          "expected": {
+            "stride": "Information Disclosure",
+            "keywords": [
+              "payment information exposure",
+              "sensitive financial data"
+            ]
+          },
+          "generated": null,
+          "matched": false
+        },
+        {
+          "expected": {
+            "stride": "Spoofing",
+            "keywords": [
+              "payment provider impersonation",
+              "credential theft"
+            ]
+          },
+          "generated": null,
+          "matched": false
+        }
+      ],
+      "generated_threats": []
+    },
+    {
+      "id": "eval_09",
+      "name": "IoT Device Backend",
+      "status": "SUCCESS",
+      "expected": 4,
+      "generated": 0,
+      "hits": 0,
+      "misses": 4,
+      "precision": 0.0,
+      "recall": 0.0,
+      "matches": [
+        {
+          "expected": {
+            "stride": "Spoofing",
+            "keywords": [
+              "device impersonation",
+              "credential theft"
+            ]
+          },
+          "generated": null,
+          "matched": false
+        },
+        {
+          "expected": {
+            "stride": "Tampering",
+            "keywords": [
+              "sensor data manipulation",
+              "message tampering"
+            ]
+          },
+          "generated": null,
+          "matched": false
+        },
+        {
+          "expected": {
+            "stride": "Information Disclosure",
+            "keywords": [
+              "sensor data exposure",
+              "unauthorized data access"
+            ]
+          },
+          "generated": null,
+          "matched": false
+        },
+        {
+          "expected": {
+            "stride": "Denial of Service",
+            "keywords": [
+              "MQTT flooding",
+              "message flooding",
+              "service disruption"
+            ]
+          },
+          "generated": null,
+          "matched": false
+        }
+      ],
+      "generated_threats": []
+    },
+    {
+      "id": "eval_10",
+      "name": "CI/CD Deployment Pipeline",
+      "status": "SUCCESS",
+      "expected": 4,
+      "generated": 0,
+      "hits": 0,
+      "misses": 4,
+      "precision": 0.0,
+      "recall": 0.0,
+      "matches": [
+        {
+          "expected": {
+            "stride": "Tampering",
+            "keywords": [
+              "malicious code",
+              "repository modification",
+              "pipeline modification"
+            ]
+          },
+          "generated": null,
+          "matched": false
+        },
+        {
+          "expected": {
+            "stride": "Elevation of Privilege",
+            "keywords": [
+              "compromised pipeline",
+              "privilege escalation",
+              "deployment credentials"
+            ]
+          },
+          "generated": null,
+          "matched": false
+        },
+        {
+          "expected": {
+            "stride": "Information Disclosure",
+            "keywords": [
+              "secret exposure",
+              "credential exposure",
+              "repository secrets"
+            ]
+          },
+          "generated": null,
+          "matched": false
+        },
+        {
+          "expected": {
+            "stride": "Spoofing",
+            "keywords": [
+              "compromised developer account",
+              "account impersonation"
+            ]
+          },
+          "generated": null,
+          "matched": false
+        }
+      ],
+      "generated_threats": []
+    }
+  ]
+}

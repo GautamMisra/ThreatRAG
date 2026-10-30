@@ -28,6 +28,20 @@ class ThreatSynthesizer:
             top_k=top_k
         )
 
+        print("\n========== SYNTHESIZER RETRIEVAL DEBUG ==========")
+        print(f"Component: {component}")
+        print(f"Technology: {technology}")
+        print(f"Retrieved chunks: {len(retrieved_chunks)}")
+
+        for i, result in enumerate(retrieved_chunks[:10], start=1):
+            chunk = result.get("chunk", result)
+
+            print(
+                f"{i}. ID={chunk.get('id', chunk.get('chunk_id'))} | "
+                f"TITLE={chunk.get('title')} | "
+                f"SOURCE={chunk.get('source')}"
+            )
+
         print("\n========== RETRIEVED CONTEXT ==========")
 
         for rank, result in enumerate(retrieved_chunks, start=1):
@@ -57,7 +71,7 @@ class ThreatSynthesizer:
         # Validate generated citations against retrieved chunks
         validated_result, rejected_threats = validate_grounding(
             result,
-            retrieved_chunks
+            retrieved_chunks,
         )
 
         # Display rejected threats for debugging

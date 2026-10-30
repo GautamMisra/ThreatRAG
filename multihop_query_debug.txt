@@ -1,0 +1,252 @@
+Initializing retrievers...
+Loading embedding model...
+Building BM25 indexes...
+Loading data\processed\attack_chunks.json...
+Loading data\processed\owasp_chunks.json...
+Loading data\processed\stride_chunks.json...
+Loaded 888 total chunks.
+BM25 indexes built.
+Loading cross-encoder model...
+Cross-encoder loaded.
+
+################################################################################
+HOP: STRIDE | SOURCE: STRIDE
+################################################################################
+
+QUERY: JWT authentication spoofing
+Searching for: JWT authentication spoofing
+RERANKED RESULTS:
+01. stride-spoofing | Spoofing | score=0.574182391166687
+02. stride-tampering | Tampering | score=-11.071283340454102
+03. stride-elevation-of-privilege | Elevation of Privilege | score=-11.23589038848877
+04. stride-denial-of-service | Denial of Service | score=-11.264827728271484
+05. stride-repudiation | Repudiation | score=-11.270991325378418
+06. stride-information-disclosure | Information Disclosure | score=-11.280084609985352
+
+QUERY: JWT service session hijacking
+Searching for: JWT service session hijacking
+RERANKED RESULTS:
+01. stride-spoofing | Spoofing | score=-10.905606269836426
+02. stride-denial-of-service | Denial of Service | score=-11.000219345092773
+03. stride-elevation-of-privilege | Elevation of Privilege | score=-11.262325286865234
+04. stride-tampering | Tampering | score=-11.33316421508789
+05. stride-repudiation | Repudiation | score=-11.399256706237793
+06. stride-information-disclosure | Information Disclosure | score=-11.414421081542969
+
+QUERY: JWT credential theft
+Searching for: JWT credential theft
+RERANKED RESULTS:
+01. stride-spoofing | Spoofing | score=-10.321928024291992
+02. stride-elevation-of-privilege | Elevation of Privilege | score=-11.244402885437012
+03. stride-information-disclosure | Information Disclosure | score=-11.355070114135742
+04. stride-repudiation | Repudiation | score=-11.355448722839355
+05. stride-tampering | Tampering | score=-11.365592956542969
+06. stride-denial-of-service | Denial of Service | score=-11.38077449798584
+
+QUERY: JWT privilege escalation
+Searching for: JWT privilege escalation
+RERANKED RESULTS:
+01. stride-elevation-of-privilege | Elevation of Privilege | score=-7.434334754943848
+02. stride-spoofing | Spoofing | score=-11.405895233154297
+03. stride-denial-of-service | Denial of Service | score=-11.409883499145508
+04. stride-repudiation | Repudiation | score=-11.425159454345703
+05. stride-tampering | Tampering | score=-11.441030502319336
+06. stride-information-disclosure | Information Disclosure | score=-11.44780158996582
+
+################################################################################
+HOP: ATTACK | SOURCE: MITRE_ATT&CK
+################################################################################
+
+QUERY: JWT token theft
+Searching for: JWT token theft
+RERANKED RESULTS:
+01. attack-T1550.001 | Application Access Token | score=0.3175084888935089
+02. attack-T1528 | Steal Application Access Token | score=-0.01648794859647751
+03. attack-T1134.001 | Token Impersonation/Theft | score=-1.053601622581482
+04. attack-T1134 | Access Token Manipulation | score=-1.6406497955322266
+05. attack-T1134.003 | Make and Impersonate Token | score=-2.3818469047546387
+06. attack-T1134.002 | Create Process with Token | score=-3.6704392433166504
+07. attack-T1657 | Financial Theft | score=-4.482494354248047
+08. attack-T1539 | Steal Web Session Cookie | score=-4.622570037841797
+09. attack-T1606 | Forge Web Credentials | score=-5.422786712646484
+10. attack-T1558.004 | AS-REP Roasting | score=-9.542083740234375
+
+QUERY: JWT token impersonation
+Searching for: JWT token impersonation
+RERANKED RESULTS:
+01. attack-T1134.001 | Token Impersonation/Theft | score=2.688842535018921
+02. attack-T1134.003 | Make and Impersonate Token | score=2.6689538955688477
+03. attack-T1134 | Access Token Manipulation | score=0.3478986620903015
+04. attack-T1134.002 | Create Process with Token | score=-0.7391691207885742
+05. attack-T1684.001 | Impersonation | score=-1.8200609683990479
+06. attack-T1656 | Impersonation | score=-1.8790919780731201
+07. attack-T1001.003 | Protocol or Service Impersonation | score=-2.763838052749634
+08. attack-T1550.001 | Application Access Token | score=-2.801952362060547
+09. attack-T1527 | Application Access Token | score=-4.485326766967773
+10. attack-T1606 | Forge Web Credentials | score=-7.0941081047058105
+
+QUERY: JWT access token manipulation
+Searching for: JWT access token manipulation
+RERANKED RESULTS:
+01. attack-T1134 | Access Token Manipulation | score=4.806453704833984
+02. attack-T1527 | Application Access Token | score=0.7640736103057861
+03. attack-T1550.001 | Application Access Token | score=0.7082812190055847
+04. attack-T1528 | Steal Application Access Token | score=-0.5716837048530579
+05. attack-T1134.003 | Make and Impersonate Token | score=-1.1620043516159058
+06. attack-T1134.002 | Create Process with Token | score=-2.7920169830322266
+07. attack-T1134.001 | Token Impersonation/Theft | score=-3.0236949920654297
+08. attack-T1098 | Account Manipulation | score=-3.226638078689575
+09. attack-T1606.002 | SAML Tokens | score=-3.7934317588806152
+10. attack-T1606 | Forge Web Credentials | score=-4.464735984802246
+
+QUERY: JWT session hijacking
+Searching for: JWT session hijacking
+RERANKED RESULTS:
+01. attack-T1563 | Remote Service Session Hijacking | score=3.147648572921753
+02. attack-T1563.002 | RDP Hijacking | score=2.6395835876464844
+03. attack-T1185 | Browser Session Hijacking | score=2.2369110584259033
+04. attack-T1563.001 | SSH Hijacking | score=1.4553937911987305
+05. attack-T1184 | SSH Hijacking | score=0.8529385328292847
+06. attack-T1076 | Remote Desktop Protocol | score=-1.1706173419952393
+07. attack-T1539 | Steal Web Session Cookie | score=-4.9174933433532715
+08. attack-T1506 | Web Session Cookie | score=-7.135948181152344
+09. attack-T1550.004 | Web Session Cookie | score=-7.162772178649902
+10. attack-T1558.004 | AS-REP Roasting | score=-9.232885360717773
+
+QUERY: JWT credential theft
+Searching for: JWT credential theft
+RERANKED RESULTS:
+01. attack-T1606 | Forge Web Credentials | score=-2.892381191253662
+02. attack-T1110.004 | Credential Stuffing | score=-3.704211711883545
+03. attack-T1555.003 | Credentials from Web Browsers | score=-4.723671913146973
+04. attack-T1555.004 | Windows Credential Manager | score=-5.267458915710449
+05. attack-T1657 | Financial Theft | score=-5.355071544647217
+06. attack-T1003 | OS Credential Dumping | score=-5.393454551696777
+07. attack-T1081 | Credentials in Files | score=-7.732653617858887
+08. attack-T1134.001 | Token Impersonation/Theft | score=-8.268159866333008
+09. attack-T1558.004 | AS-REP Roasting | score=-9.291202545166016
+10. attack-T1213.005 | Messaging Applications | score=-10.266650199890137
+
+################################################################################
+HOP: OWASP | SOURCE: OWASP
+################################################################################
+
+QUERY: JWT authentication failures
+Searching for: JWT authentication failures
+RERANKED RESULTS:
+01. owasp-a07 | A07:2025 – Authentication Failures | score=0.1729922890663147
+02. owasp-cheatsheet-threat-identification | Threat Identification | score=-0.9103168249130249
+03. owasp-a10 | A10:2025 – Mishandling of Exceptional Conditions | score=-2.6428146362304688
+04. owasp-a09 | A09:2025 – Security Logging and Alerting Failures | score=-5.891782283782959
+05. owasp-a01 | A01:2025 – Broken Access Control | score=-7.58609676361084
+06. owasp-a08 | A08:2025 – Software and Data Integrity Failures | score=-8.939167022705078
+07. owasp-a02 | A02:2025 – Security Misconfiguration | score=-9.578944206237793
+08. owasp-a03 | A03:2025 – Software Supply Chain Failures | score=-9.589990615844727
+09. owasp-a04 | A04:2025 – Cryptographic Failures | score=-9.893970489501953
+10. owasp-a05 | A05:2025 – Injection | score=-11.119524002075195
+
+QUERY: JWT broken access control
+Searching for: JWT broken access control
+RERANKED RESULTS:
+01. owasp-a01 | A01:2025 – Broken Access Control | score=-4.557062149047852
+02. owasp-cheatsheet-threat-identification | Threat Identification | score=-5.983485698699951
+03. owasp-a09 | A09:2025 – Security Logging and Alerting Failures | score=-6.30684232711792
+04. owasp-a10 | A10:2025 – Mishandling of Exceptional Conditions | score=-9.804222106933594
+05. owasp-a03 | A03:2025 – Software Supply Chain Failures | score=-9.996597290039062
+06. owasp-a07 | A07:2025 – Authentication Failures | score=-10.72448444366455
+07. owasp-a02 | A02:2025 – Security Misconfiguration | score=-10.766324043273926
+08. owasp-a08 | A08:2025 – Software and Data Integrity Failures | score=-10.805233001708984
+09. owasp-a04 | A04:2025 – Cryptographic Failures | score=-11.206087112426758
+10. owasp-a05 | A05:2025 – Injection | score=-11.228578567504883
+
+QUERY: JWT token validation
+Searching for: JWT token validation
+RERANKED RESULTS:
+01. owasp-cheatsheet-threat-identification | Threat Identification | score=-3.6614537239074707
+02. owasp-a07 | A07:2025 – Authentication Failures | score=-8.59190559387207
+03. owasp-a08 | A08:2025 – Software and Data Integrity Failures | score=-9.31617546081543
+04. owasp-a04 | A04:2025 – Cryptographic Failures | score=-9.520448684692383
+05. owasp-a01 | A01:2025 – Broken Access Control | score=-10.018546104431152
+06. owasp-a02 | A02:2025 – Security Misconfiguration | score=-10.321544647216797
+07. owasp-a09 | A09:2025 – Security Logging and Alerting Failures | score=-10.348087310791016
+08. owasp-a05 | A05:2025 – Injection | score=-10.68048095703125
+09. owasp-a10 | A10:2025 – Mishandling of Exceptional Conditions | score=-11.087270736694336
+10. owasp-a06 | A06:2025 – Insecure Design | score=-11.244926452636719
+
+QUERY: JWT session management
+Searching for: JWT session management
+RERANKED RESULTS:
+01. owasp-cheatsheet-threat-identification | Threat Identification | score=-4.837835788726807
+02. owasp-a07 | A07:2025 – Authentication Failures | score=-8.982420921325684
+03. owasp-a01 | A01:2025 – Broken Access Control | score=-10.096720695495605
+04. owasp-a03 | A03:2025 – Software Supply Chain Failures | score=-10.43684196472168
+05. owasp-a08 | A08:2025 – Software and Data Integrity Failures | score=-10.860359191894531
+06. owasp-a02 | A02:2025 – Security Misconfiguration | score=-10.87411880493164
+07. owasp-a10 | A10:2025 – Mishandling of Exceptional Conditions | score=-11.007101058959961
+08. owasp-a09 | A09:2025 – Security Logging and Alerting Failures | score=-11.211712837219238
+09. owasp-a04 | A04:2025 – Cryptographic Failures | score=-11.318151473999023
+10. owasp-a05 | A05:2025 – Injection | score=-11.318617820739746
+
+QUERY: JWT security misconfiguration
+Searching for: JWT security misconfiguration
+RERANKED RESULTS:
+01. owasp-cheatsheet-threat-identification | Threat Identification | score=-2.2992939949035645
+02. owasp-a02 | A02:2025 – Security Misconfiguration | score=-9.473791122436523
+03. owasp-a08 | A08:2025 – Software and Data Integrity Failures | score=-9.665019989013672
+04. owasp-a01 | A01:2025 – Broken Access Control | score=-9.688237190246582
+05. owasp-a07 | A07:2025 – Authentication Failures | score=-9.837995529174805
+06. owasp-a09 | A09:2025 – Security Logging and Alerting Failures | score=-10.01254653930664
+07. owasp-a04 | A04:2025 – Cryptographic Failures | score=-10.3492431640625
+08. owasp-cheatsheet-addressing-the-challenges | Addressing the Challenges | score=-10.577398300170898
+09. owasp-cheatsheet-identify-risks-early-on | Identify Risks Early On | score=-11.042173385620117
+10. owasp-cheatsheet-increased-security-awareness | Increased Security Awareness | score=-11.238729476928711
+
+================================================================================
+TARGET CHUNK SUMMARY
+================================================================================
+
+attack-T1134
+Appearances: 3
+Best rank: 1
+  - JWT token theft (rank 4)
+  - JWT token impersonation (rank 3)
+  - JWT access token manipulation (rank 1)
+
+owasp-cheatsheet-threat-identification
+Appearances: 5
+Best rank: 1
+  - JWT authentication failures (rank 2)
+  - JWT broken access control (rank 2)
+  - JWT token validation (rank 1)
+  - JWT session management (rank 1)
+  - JWT security misconfiguration (rank 1)
+
+attack-T1550.001
+Appearances: 3
+Best rank: 1
+  - JWT token theft (rank 1)
+  - JWT token impersonation (rank 8)
+  - JWT access token manipulation (rank 3)
+
+owasp-a07
+Appearances: 5
+Best rank: 1
+  - JWT authentication failures (rank 1)
+  - JWT broken access control (rank 6)
+  - JWT token validation (rank 2)
+  - JWT session management (rank 2)
+  - JWT security misconfiguration (rank 5)
+
+attack-T1134.001
+Appearances: 4
+Best rank: 1
+  - JWT token theft (rank 3)
+  - JWT token impersonation (rank 1)
+  - JWT access token manipulation (rank 7)
+  - JWT credential theft (rank 8)
+
+attack-T1528
+Appearances: 2
+Best rank: 2
+  - JWT token theft (rank 2)
+  - JWT access token manipulation (rank 4)

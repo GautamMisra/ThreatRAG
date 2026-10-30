@@ -1,0 +1,349 @@
+Loading embedding model...
+Building BM25 indexes...
+Loading data\processed\attack_chunks.json...
+Loading data\processed\owasp_chunks.json...
+Loading data\processed\stride_chunks.json...
+Loaded 888 total chunks.
+BM25 indexes built.
+Loading cross-encoder model...
+Cross-encoder loaded.
+
+========== STRIDE HOP ==========
+Source: STRIDE
+Searching for: JWT authentication spoofing
+Searching for: JWT service session hijacking
+Searching for: JWT credential theft
+Searching for: JWT privilege escalation
+
+========== ATTACK HOP ==========
+Source: MITRE_ATT&CK
+Searching for: JWT token theft
+Searching for: JWT token impersonation
+Searching for: JWT access token manipulation
+Searching for: JWT session hijacking
+Searching for: JWT credential theft
+
+========== OWASP HOP ==========
+Source: OWASP
+Searching for: JWT authentication failures
+Searching for: JWT broken access control
+Searching for: JWT token validation
+Searching for: JWT session management
+Searching for: JWT security misconfiguration
+
+========== FINAL AGGREGATED RESULTS ==========
+Component: Auth Service
+Technology: JWT
+01. attack-T1550.001 | Application Access Token | base=0.020362 | adjustment=+0.003000 | adjusted=0.023362 | appearances=3 | hops=['attack']
+02. attack-T1528 | Steal Application Access Token | base=0.020035 | adjustment=+0.003000 | adjusted=0.023035 | appearances=2 | hops=['attack']
+03. attack-T1606 | Forge Web Credentials | base=0.020017 | adjustment=+0.003000 | adjusted=0.023017 | appearances=4 | hops=['attack']
+04. attack-T1527 | Application Access Token | base=0.019752 | adjustment=+0.003000 | adjusted=0.022752 | appearances=2 | hops=['attack']
+05. owasp-a07 | A07:2025 – Authentication Failures | base=0.020426 | adjustment=+0.002000 | adjusted=0.022426 | appearances=5 | hops=['owasp']
+06. owasp-a01 | A01:2025 – Broken Access Control | base=0.020362 | adjustment=+0.002000 | adjusted=0.022362 | appearances=5 | hops=['owasp']
+07. stride-spoofing | Spoofing | base=0.020492 | adjustment=+0.000000 | adjusted=0.020492 | appearances=4 | hops=['stride']
+08. stride-elevation-of-privilege | Elevation of Privilege | base=0.020426 | adjustment=+0.000000 | adjusted=0.020426 | appearances=4 | hops=['stride']
+09. stride-denial-of-service | Denial of Service | base=0.020097 | adjustment=+0.000000 | adjusted=0.020097 | appearances=4 | hops=['stride']
+10. stride-tampering | Tampering | base=0.020035 | adjustment=+0.000000 | adjusted=0.020035 | appearances=4 | hops=['stride']
+11. owasp-a02 | A02:2025 – Security Misconfiguration | base=0.019917 | adjustment=+0.000000 | adjusted=0.019917 | appearances=5 | hops=['owasp']
+12. owasp-a08 | A08:2025 – Software and Data Integrity Failures | base=0.019841 | adjustment=+0.000000 | adjusted=0.019841 | appearances=5 | hops=['owasp']
+13. owasp-a10 | A10:2025 – Mishandling of Exceptional Conditions | base=0.019779 | adjustment=+0.000000 | adjusted=0.019779 | appearances=4 | hops=['owasp']
+14. owasp-a09 | A09:2025 – Security Logging and Alerting Failures | base=0.019779 | adjustment=+0.000000 | adjusted=0.019779 | appearances=5 | hops=['owasp']
+15. stride-information-disclosure | Information Disclosure | base=0.019661 | adjustment=+0.000000 | adjusted=0.019661 | appearances=4 | hops=['stride']
+
+================================================================================
+FINAL MULTIHOP RETRIEVAL RESULTS
+================================================================================
+
+RANK: 1
+ID: attack-T1550.001
+SOURCE: MITRE_ATT&CK
+TITLE: Application Access Token
+SCORE: 0.7082812190055847
+COMBINED SCORE: 0.02036169659120479
+HOPS: ['attack']
+TEXT: Technique: Application Access Token
+ATT&CK ID: T1550.001
+Description: Adversaries may use stolen application access tokens to bypass the typical authentication process and access restricted accounts, information, or services on remote systems. These tokens are typically stolen from users or services and used in lieu of login credentials.
+
+Application access tokens are used to make authorized API requests on behalf of a user or service and are commonly used to access resources in cloud, container-based applications, and software-as-a-service (SaaS).(Citation: Auth0 - Why You Should Always Use Access Tokens to Secure APIs Sept 2019) 
+
+OAuth is one commonly implemented framework that issues tok
+--------------------------------------------------------------------------------
+
+RANK: 2
+ID: attack-T1528
+SOURCE: MITRE_ATT&CK
+TITLE: Steal Application Access Token
+SCORE: -0.01648794859647751
+COMBINED SCORE: 0.020035282258064516
+HOPS: ['attack']
+TEXT: Technique: Steal Application Access Token
+ATT&CK ID: T1528
+Description: Adversaries can steal application access tokens as a means of acquiring credentials to access remote systems and resources.
+
+Application access tokens are used to make authorized API requests on behalf of a user or service and are commonly used as a way to access resources in cloud and container-based applications and software-as-a-service (SaaS).(Citation: Auth0 - Why You Should Always Use Access Tokens to Secure APIs Sept 2019)  Adversaries who steal account API tokens in cloud and containerized environments may be able to access data and perform actions with the permissions of these accounts, which can lead to privile
+--------------------------------------------------------------------------------
+
+RANK: 3
+ID: attack-T1606
+SOURCE: MITRE_ATT&CK
+TITLE: Forge Web Credentials
+SCORE: -2.892381191253662
+COMBINED SCORE: 0.02001663102874792
+HOPS: ['attack']
+TEXT: Technique: Forge Web Credentials
+ATT&CK ID: T1606
+Description: Adversaries may forge credential materials that can be used to gain access to web applications or Internet services. Web applications and services (hosted in cloud SaaS environments or on-premise servers) often use session cookies, tokens, or other materials to authenticate and authorize user access.
+
+Adversaries may generate these credential materials in order to gain access to web resources. This differs from [Steal Web Session Cookie](https://attack.mitre.org/techniques/T1539), [Steal Application Access Token](https://attack.mitre.org/techniques/T1528), and other similar behaviors in that the credentials are new and forged by 
+--------------------------------------------------------------------------------
+
+RANK: 4
+ID: attack-T1527
+SOURCE: MITRE_ATT&CK
+TITLE: Application Access Token
+SCORE: 0.7640736103057861
+COMBINED SCORE: 0.019752220663861616
+HOPS: ['attack']
+TEXT: Technique: Application Access Token
+ATT&CK ID: T1527
+Description: Adversaries may use application access tokens to bypass the typical authentication process and access restricted accounts, information, or services on remote systems. These tokens are typically stolen from users and used in lieu of login credentials.
+
+Application access tokens are used to make authorized API requests on behalf of a user and are commonly used as a way to access resources in cloud-based applications and software-as-a-service (SaaS).(Citation: Auth0 - Why You Should Always Use Access Tokens to Secure APIs Sept 2019) OAuth is one commonly implemented framework that issues tokens to users for access to systems. The
+--------------------------------------------------------------------------------
+
+RANK: 5
+ID: owasp-a07
+SOURCE: OWASP
+TITLE: A07:2025 – Authentication Failures
+SCORE: 0.1729922890663147
+COMBINED SCORE: 0.02042570068746695
+HOPS: ['owasp']
+TEXT: Description:
+
+(Refined from Identification and Authentication Failures). Involves flaws that allow attackers to compromise passwords, keys, session tokens, or exploit other implementation flaws to assume other users' identities.
+
+How to Prevent:
+
+Require Multi-Factor Authentication (MFA) for all sensitive actions and administrative portals.
+
+Implement rate limiting, CAPTCHAs, and account lockout/back-off policies against brute-force and credential stuffing attacks.
+
+Use secure, randomly generated session identifiers stored in HttpOnly, Secure, and SameSite cookies.
+
+Invalidate session tokens immediately upon logout or privilege modification.
+
+Attack Scenario:
+
+An application’s login endpoint
+--------------------------------------------------------------------------------
+
+RANK: 6
+ID: owasp-a01
+SOURCE: OWASP
+TITLE: A01:2025 – Broken Access Control
+SCORE: -4.557062149047852
+COMBINED SCORE: 0.02036169659120479
+HOPS: ['owasp']
+TEXT: Description:
+
+Occurs when restrictions on what authenticated or anonymous users are allowed to do are not properly enforced. Attackers can exploit these flaws to access unauthorized functionality or data (e.g., viewing other accounts, accessing sensitive files, modifying user permissions). In the 2025 edition, Server-Side Request Forgery (SSRF) as well as API authorization flaws (BOLA and BFLA) are formally folded into this category.
+
+How to Prevent:
+
+Adopt a "deny by default" access policy; only explicitly granted roles or users should gain access.
+
+Implement centralized access control mechanisms in server-side code rather than client-side validations.
+
+Enforce record ownership checks on ev
+--------------------------------------------------------------------------------
+
+RANK: 7
+ID: stride-spoofing
+SOURCE: STRIDE
+TITLE: Spoofing
+SCORE: 0.574182391166687
+COMBINED SCORE: 0.020491803278688527
+HOPS: ['stride']
+TEXT: Spoofing is the act of pretending to be another user, service, or system component.
+
+Typical security concern:
+- Attacker impersonates a legitimate identity.
+- Attacker gains access using stolen or forged credentials.
+
+Examples:
+- Stolen user credentials
+- Forged authentication tokens
+- Impersonating an internal service
+
+---
+--------------------------------------------------------------------------------
+
+RANK: 8
+ID: stride-elevation-of-privilege
+SOURCE: STRIDE
+TITLE: Elevation of Privilege
+SCORE: -7.434334754943848
+COMBINED SCORE: 0.02042570068746695
+HOPS: ['stride']
+TEXT: Elevation of Privilege occurs when an attacker gains permissions beyond those they are authorized to have.
+
+Typical security concern:
+- A low-privileged user or process gains higher privileges.
+
+Examples:
+- Normal user gaining administrator privileges
+- Exploiting an authorization vulnerability
+- A compromised service accessing restricted resources
+--------------------------------------------------------------------------------
+
+RANK: 9
+ID: stride-denial-of-service
+SOURCE: STRIDE
+TITLE: Denial of Service
+SCORE: -11.000219345092773
+COMBINED SCORE: 0.020097286226318484
+HOPS: ['stride']
+TEXT: Denial of Service occurs when an attacker prevents legitimate users from accessing a system or resource.
+
+Typical security concern:
+- System availability is degraded or completely disrupted.
+
+Examples:
+- Flooding an API with requests
+- Exhausting server resources
+- Resource exhaustion through expensive operations
+
+---
+--------------------------------------------------------------------------------
+
+RANK: 10
+ID: stride-tampering
+SOURCE: STRIDE
+TITLE: Tampering
+SCORE: -11.071283340454102
+COMBINED SCORE: 0.020035282258064516
+HOPS: ['stride']
+TEXT: Tampering involves unauthorized modification of data, messages, configurations, or system state.
+
+Typical security concern:
+- An attacker changes information without authorization.
+
+Examples:
+- Modifying database records
+- Altering data in transit
+- Changing application configuration
+
+---
+--------------------------------------------------------------------------------
+
+RANK: 11
+ID: owasp-a02
+SOURCE: OWASP
+TITLE: A02:2025 – Security Misconfiguration
+SCORE: -9.473791122436523
+COMBINED SCORE: 0.019916911045943304
+HOPS: ['owasp']
+TEXT: Description:
+
+Climbing to #2 in 2025 due to the explosion of complex cloud, container, and infrastructure-as-code deployments. It involves unhardened application stacks, default credentials, exposed administrative interfaces, excessive cloud permissions, unneeded enabled services/ports, or overly permissive CORS configurations.
+
+How to Prevent:
+
+Implement automated hardened baseline images and Infrastructure-as-Code (IaC) scanners.
+
+Disable default accounts and enforce password changes on initial setup.
+
+Turn off debugging and detailed stack-trace error messages in production environments.
+
+Send security headers (Content-Security-Policy, X-Frame-Options, Strict-Transport-Security).
+
+Enforce 
+--------------------------------------------------------------------------------
+
+RANK: 12
+ID: owasp-a08
+SOURCE: OWASP
+TITLE: A08:2025 – Software and Data Integrity Failures
+SCORE: -8.939167022705078
+COMBINED SCORE: 0.01984126984126984
+HOPS: ['owasp']
+TEXT: Description:
+
+Focuses on code and infrastructure that does not protect against integrity violations. This includes deserializing untrusted data without verification, relying on unverified CDNs or plugins, and running unsigned firmware or application update scripts.
+
+How to Prevent:
+
+Use digital signatures to verify that software artifacts, binaries, and updates originate from trusted sources.
+
+Avoid native deserialization formats (e.g., Python pickle, Java ObjectInputStream) for untrusted user inputs; adopt safe serialization formats like JSON or Protocol Buffers.
+
+Use Subresource Integrity (SRI) hashes when including third-party scripts via CDNs.
+
+Attack Scenario:
+
+A web application receive
+--------------------------------------------------------------------------------
+
+RANK: 13
+ID: owasp-a10
+SOURCE: OWASP
+TITLE: A10:2025 – Mishandling of Exceptional Conditions
+SCORE: -2.6428146362304688
+COMBINED SCORE: 0.019779265873015872
+HOPS: ['owasp']
+TEXT: Description:
+
+A new category in 2025 capturing failures that occur when things go wrong unexpectedly during runtime. This includes "fail-open" logic (granting access or bypassing checks when a database query or auth provider times out), uncaught exceptions exposing internal stack traces, and unhandled race conditions leading to system instability.
+
+How to Prevent:
+
+Enforce "fail-closed / fail-secure" programming patterns—if an authentication or permission check crashes or times out, access must default to denied.
+
+Implement global exception-handling handlers that return generic, friendly error pages while routing raw details to private logs.
+
+Clean up and release system resources (file handl
+--------------------------------------------------------------------------------
+
+RANK: 14
+ID: owasp-a09
+SOURCE: OWASP
+TITLE: A09:2025 – Security Logging and Alerting Failures
+SCORE: -5.891782283782959
+COMBINED SCORE: 0.019779265873015872
+HOPS: ['owasp']
+TEXT: Description:
+
+Insufficient logging, detection, monitoring, and active alerting. If security-relevant events (such as failed logins, access violations, or server exceptions) are not recorded or analyzed in real time, attackers can persist within systems undetected for months.
+
+How to Prevent:
+
+Ensure all login, access control, and server-side validation failures generate auditable log records with sufficient user/request context.
+
+Prevent logs from recording sensitive data (plain passwords, API keys, PII).
+
+Centralize logs into a SIEM/monitoring service with real-time alerting on suspicious patterns (e.g., multiple access violations from a single IP).
+
+Implement log integrity safeguards to pr
+--------------------------------------------------------------------------------
+
+RANK: 15
+ID: stride-information-disclosure
+SOURCE: STRIDE
+TITLE: Information Disclosure
+SCORE: -11.280084609985352
+COMBINED SCORE: 0.01966089466089466
+HOPS: ['stride']
+TEXT: Information disclosure occurs when sensitive information is exposed to an unauthorized person or system.
+
+Typical security concern:
+- Confidential data becomes accessible to an unintended party.
+
+Examples:
+- Exposed passwords
+- Leaked personal information
+- Sensitive data returned through an API
+- Database information exposed through an injection vulnerability
+
+---
+--------------------------------------------------------------------------------

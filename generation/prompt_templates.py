@@ -1,147 +1,170 @@
+
+import json
+
+
 def build_synthesis_prompt(component, technology, retrieved_chunks):
+    """
+    Build a grounded threat-synthesis prompt that prioritizes relevance
+    to the specified component and technology.
+    """
 
-    context = ""
+    context_chunks = []
 
-    for i, result in enumerate(retrieved_chunks, start=1):
+    for result in retrieved_chunks:
+        chunk = result.get("chunk", result)
 
-        chunk = result["chunk"]
+        context_chunks.append({
+            "id": chunk.get("id", ""),
+            "source": chunk.get("source", ""),
+            "title": chunk.get("title", ""),
+            "text": (
+                chunk.get("text")
+                or chunk.get("content")
+                or chunk.get("chunk_text")
+                or ""
+            ),
+        })
 
-        context += f"""
-[CHUNK {i}]
-Chunk ID: {chunk["id"]}
-Source: {chunk["source"]}
-Title: {chunk["title"]}
-
-Content:
-{chunk["text"]}
-
--------------------------
-"""
+    context_json = json.dumps(context_chunks, indent=2)
 
     prompt = f"""
 You are a cybersecurity threat-modeling assistant.
 
-Your task is to generate a grounded threat model for the following
-system component using ONLY the retrieved security knowledge provided below.
+Your task is to generate a threat model for ONE specific system component
+using only the retrieved reference material as evidence.
 
-COMPONENT:
+TARGET COMPONENT:
 {component}
 
-TECHNOLOGY:
+TARGET TECHNOLOGY:
 {technology}
 
-RETRIEVED SECURITY KNOWLEDGE:
-{context}
+RETRIEVED REFERENCE CHUNKS:
+{context_json}
 
-IMPORTANT GROUNDING RULES:
+==================================================
+1. COMPONENT AND TECHNOLOGY RELEVANCE
+==================================================
 
-1. Use ONLY information supported by the retrieved chunks.
-2. Do NOT use your own external knowledge to introduce new threats,
-   techniques, vulnerabilities, or recommendations.
-3. Every threat MUST cite at least one retrieved Chunk ID.
-4. Do NOT invent Chunk IDs, source names, technique IDs, or vulnerability IDs.
-5. The source citation must correspond exactly to one of the provided chunks.
-6. The evidence field must contain information supported by the cited chunk.
-7. If the retrieved context does not provide enough evidence for a threat,
-   do not include that threat.
-8. Likelihood and impact are estimates made by the LLM based on the
-   retrieved evidence. Clearly label them as estimates.
-9. Keep the answer concise and security-focused.
-10. The "stride_category" field MUST be exactly one of these six values:
-    Spoofing
-    Tampering
-    Repudiation
-    Information Disclosure
-    Denial of Service
-    Elevation of Privilege
+Every threat must apply to the TARGET COMPONENT and its stated TECHNOLOGY.
 
-    Do NOT use MITRE ATT&CK tactics such as Credential Access,
-    Lateral Movement, Execution, Persistence, Defense Evasion,
-    Discovery, or Privilege Escalation as STRIDE categories.
-11. The "source_id" field MUST exactly match the complete "Chunk ID"
-    shown in the retrieved context.
+Before including a threat, internally check:
+- Does this threat apply to this component?
+- Does it apply to the stated technology or an explicitly described interaction?
+- Does the retrieved evidence actually support the threat?
+- Is the threat relevant to this component's role in the system?
 
-    For example:
-    If the retrieved chunk says:
-    Chunk ID: attack-T1134
+If any answer is no or cannot be established, DO NOT include that threat.
 
-    You MUST output:
-    "source_id": "attack-T1134"
+Do not assume technologies, operating systems, infrastructure, or deployment
+details that the user has not provided.
 
-    NOT:
-    "source_id": "T1134"
+IMPORTANT TECHNOLOGY DISTINCTION:
+A JWT application token is not the same thing as a Windows operating-system
+access token.
 
-    Similarly:
-    "attack-T1563.002" must remain exactly "attack-T1563.002".
+For example, MITRE ATT&CK techniques concerning Windows access-token
+manipulation, process-token duplication, or Windows privilege escalation
+must NOT automatically be treated as JWT vulnerabilities.
 
-    Never remove prefixes such as "attack-", "owasp-", or "stride-".
-12. The source_id, source, and source_title MUST all refer to the SAME
-    retrieved chunk.
+Only include such techniques if the supplied architecture explicitly makes
+them relevant and the retrieved evidence supports that connection.
 
-    For example, if the retrieved context contains:
+Do not force every retrieved chunk into the output. It is acceptable to
+return fewer threats, including zero threats, when the evidence is irrelevant.
 
-    Chunk ID: attack-T1134
-    Source: MITRE_ATT&CK
-    Title: Access Token Manipulation
+==================================================
+2. EVIDENCE AND GROUNDING
+==================================================
 
-    then a threat about Access Token Manipulation MUST use:
+Use ONLY the supplied retrieved chunks as evidence.
 
-    "source": "MITRE_ATT&CK",
-    "source_id": "attack-T1134",
-    "source_title": "Access Token Manipulation"
+- Do not invent vulnerabilities, attack details, or source references.
+- Every threat must cite one retrieved chunk using its exact ID.
+- Copy the source and title exactly from the same cited chunk.
+- The evidence field must accurately reflect information in that chunk.
+- Do not claim that a chunk proves something it does not discuss.
+- Do not combine multiple sources into one citation.
+- Do not invent chunk IDs or alter their prefixes.
+- If a threat is plausible but the retrieved material does not support it,
+  omit it rather than presenting it as a confirmed, grounded threat.
 
-    Do NOT use a Chunk ID belonging to a different threat or technique.
+The target component and technology help determine relevance; they are not
+themselves evidence that a vulnerability exists.
 
-13. The evidence field MUST be derived from the Content of the cited
-    chunk. Do not use evidence from another retrieved chunk.
-14. Do NOT generate a mitigation or recommendation unless it is explicitly
-    supported by the retrieved chunk(s). If the retrieved evidence does
-    not contain a mitigation, write:
-    "No mitigation supported by retrieved evidence."
+==================================================
+3. THREAT QUALITY
+==================================================
 
-15. Do NOT infer or add cybersecurity knowledge from the model's own
-    knowledge, even if the recommendation is generally considered good
-    security practice.
+Each threat must:
+- Describe a concrete attack or security failure.
+- Explain the potential consequence for the target component.
+- Use the most appropriate STRIDE category:
+  Spoofing, Tampering, Repudiation, Information Disclosure,
+  Denial of Service, or Elevation of Privilege.
+- Avoid duplicating another threat with different wording.
+- Avoid generic claims such as "hackers may attack the system" without
+  a specific, evidence-supported attack scenario.
 
-16. The stride_category MUST be one of:
-    Spoofing, Tampering, Repudiation, Information Disclosure,
-    Denial of Service, Elevation of Privilege.
+Prefer a small number of relevant, evidence-supported threats over a long
+list of weak or unrelated threats.
 
-    If a retrieved threat does not clearly map to one of these categories,
-    do not include that threat.
+==================================================
+4. MITIGATIONS
+==================================================
 
-RETURN ONLY VALID JSON.
+Each mitigation must address the specific threat.
+
+- Prefer actionable controls over generic advice.
+- Do not claim that a control completely prevents an attack unless the
+  evidence supports that claim.
+- Do not recommend unrelated controls just to fill the field.
+- Do not present general best practices as if they were stated in the
+  retrieved source.
+- If the source describes an attack but does not provide a mitigation,
+  provide a conservative, technically appropriate recommendation only
+  when it directly addresses the described attack. Do not falsely attribute
+  that recommendation to the source.
+
+==================================================
+5. OUTPUT FORMAT
+==================================================
+
+Return ONLY valid JSON. Do not use Markdown fences or additional prose.
 
 Use exactly this structure:
 
 {{
-    "summary": "Brief summary of the main security risks supported by the retrieved evidence.",
-    "threats": [
-        {{
-            "stride_category": "One of: Spoofing, Tampering, Repudiation, Information Disclosure, Denial of Service, Elevation of Privilege",
-            "threat": "Description of the threat",
-            "likelihood": "LLM-estimated likelihood",
-            "impact": "LLM-estimated impact",
-            "mitigation": "Mitigation supported by the retrieved context",
-            "source": "MITRE_ATT&CK, STRIDE, or OWASP",
-            "source_id": "Exact Chunk ID from the retrieved chunk",
-            "source_title": "Exact Title from the cited chunk",
-            "evidence": "Relevant evidence from the cited chunk"
-        }}
-    ],
-    "recommendations": [
-        "Security recommendation supported by the retrieved context"
-    ]
+  "summary": "Short summary of the relevant threats, or that no relevant threats could be established from the retrieved evidence.",
+  "threats": [
+    {{
+      "stride_category": "One valid STRIDE category",
+      "threat": "Specific threat description",
+      "likelihood": "Low, Medium, or High",
+      "impact": "Low, Medium, or High",
+      "mitigation": "Specific mitigation",
+      "source": "Exact source value from the cited chunk",
+      "source_id": "Exact chunk ID from the cited chunk",
+      "source_title": "Exact title from the cited chunk",
+      "evidence": "Accurate supporting evidence from the cited chunk"
+    }}
+  ],
+  "recommendations": [
+    "Actionable recommendation relevant to the target component"
+  ]
 }}
 
-Do not include markdown.
-Do not include ```json.
-Return only the JSON object.
-
-Now generate the threat model.
+Additional output rules:
+- Use an empty threats array if no relevant threats are supported.
+- Recommendations must be relevant to the target component.
+- Do not include threats merely to populate every STRIDE category.
+- Do not include a grounded field; the grounding validator adds it.
+- Ensure the JSON is syntactically valid.
 """
 
     return prompt
+
+
 
 if __name__ == "__main__":
 
@@ -151,7 +174,10 @@ if __name__ == "__main__":
                 "id": "attack-T1134",
                 "source": "MITRE_ATT&CK",
                 "title": "Access Token Manipulation",
-                "text": "Adversaries may modify access tokens to operate under different security contexts."
+                "text": (
+                    "Adversaries may modify access tokens to operate "
+                    "under different security contexts."
+                )
             }
         },
         {
@@ -159,15 +185,18 @@ if __name__ == "__main__":
                 "id": "owasp-a07",
                 "source": "OWASP",
                 "title": "Authentication Failures",
-                "text": "Authentication failures can occur when authentication mechanisms are improperly implemented."
+                "text": (
+                    "Authentication failures can occur when "
+                    "authentication mechanisms are improperly implemented."
+                )
             }
         }
     ]
 
-    prompt = build_synthesis_prompt(
-        component="web API",
-        technology="SQL Injection",
-        retrieved_chunks=test_chunks
+    print(
+        build_synthesis_prompt(
+            component="Auth Service",
+            technology="JWT",
+            retrieved_chunks=test_chunks
+        )
     )
-
-    print(prompt)
